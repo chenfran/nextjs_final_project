@@ -34,30 +34,45 @@ export default function RegisterForm() {
   }
 
   return (
-    <form onSubmit={async (event) => await handleRegister(event)}>
-      <label>
-        username
-        <input
-          value={username}
-          onChange={(event) => setUsername(event.currentTarget.value)}
-        />
-      </label>
+    <div className="flex flex-col justify-center text-center pt-4">
+      <h1 className="text-4xl font-bold mb-8">Register Page</h1>
+      <form
+        className="flex flex-col items-center w-full max-w-md mx-auto"
+        onSubmit={async (event) => await handleRegister(event)}
+      >
+        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
+          Username
+          <input
+            className="grow"
+            placeholder="holger"
+            value={username}
+            onChange={(event) => setUsername(event.currentTarget.value)}
+          />
+        </label>
 
-      <label>
-        password
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.currentTarget.value)}
-        />
-      </label>
-      <button className="btn btn-primary">Register</button>
-
-      {errors.map((error) => (
-        <div key={`error-${error.message}`}>
-          <ErrorMessage>{error.message}</ErrorMessage>
+        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
+          Password
+          <input
+            className="grow"
+            placeholder="*****"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.currentTarget.value)}
+          />
+        </label>
+        <p className="text-xs mb-4">
+          [i] Username and password must contain at least 3 characters
+        </p>
+        <div className="flex justify-end w-full">
+          <button className="btn btn-primary gap-2">Register</button>
         </div>
-      ))}
-    </form>
+
+        {errors.map((error) => (
+          <div key={`error-${error.message}`}>
+            <ErrorMessage>{error.message}</ErrorMessage>
+          </div>
+        ))}
+      </form>
+    </div>
   );
 }

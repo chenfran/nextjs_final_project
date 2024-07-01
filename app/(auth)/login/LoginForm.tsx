@@ -34,30 +34,40 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={async (event) => await handleLogin(event)}>
-      <label>
-        username
-        <input
-          value={username}
-          onChange={(event) => setUsername(event.currentTarget.value)}
-        />
-      </label>
+    <div className="flex flex-col justify-center text-center pt-4">
+      <h1 className="text-4xl font-bold mb-8">Login Page</h1>
+      <form
+        className="flex flex-col items-center w-full max-w-md mx-auto"
+        onSubmit={async (event) => await handleLogin(event)}
+      >
+        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
+          Username
+          <input
+            className="grow"
+            value={username}
+            onChange={(event) => setUsername(event.currentTarget.value)}
+          />
+        </label>
 
-      <label>
-        password
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.currentTarget.value)}
-        />
-      </label>
-      <button className="btn btn-primary">Login</button>
-
-      {errors.map((error) => (
-        <div key={`error-${error.message}`}>
-          <ErrorMessage>{error.message}</ErrorMessage>
+        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
+          Password
+          <input
+            className="grow"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.currentTarget.value)}
+          />
+        </label>
+        <div className="flex justify-end w-full">
+          <button className="btn btn-success gap-2">Login</button>
         </div>
-      ))}
-    </form>
+
+        {errors.map((error) => (
+          <div key={`error-${error.message}`}>
+            <ErrorMessage>{error.message}</ErrorMessage>
+          </div>
+        ))}
+      </form>
+    </div>
   );
 }

@@ -40,3 +40,17 @@ export const createUserInsecure = cache(
     return user;
   },
 );
+
+export const getUserWithPasswordHashInsecure = cache(
+  async (username: string) => {
+    const [user] = await sql<UserWithPasswordHash[]>`
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        username = ${username}
+    `;
+    return user;
+  },
+);

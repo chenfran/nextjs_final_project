@@ -1,0 +1,78 @@
+import bcrypt from 'bcrypt';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import {
+  getUserWithPasswordHashInsecure,
+  User,
+} from '../../../../database/users';
+
+export type LoginResponseBodyPost =
+  | {
+      user: Pick<User, 'username'>;
+    }
+  | {
+      errors: { message: string }[];
+    };
+
+const userSchema = z.object({
+  username: z.string().min(3),
+  password: z.string().min(3),
+});
+
+export async function POST(
+  request: NextRequest,
+): Promise<NextResponse<LoginResponseBodyPost>> {
+  // Task: Implement the user login workflow
+
+  // 1️⃣ Get the user data from the request
+  const body = await request.json();
+
+  // 2️⃣ Validate the user data with zod
+  const result = userSchema.safeParse(body);
+  console.log(result.error?.issues); // OUTPUT: [{code: 'too_small', minimum: 3, type: 'string', inclusive: true, exact: false, message: 'String must contain at least 3 character(s)', path: [ 'username' ]},{code: 'too_small', minimum: 3, type: 'string', inclusive: true, exact: false, message: 'String must contain at least 3 character(s)', path: [ 'password' ]}]
+
+  // If there is no success or the success is false, return the error:
+  if (!result.success) {
+    return NextResponse.json({ errors: result.error.issues }, { status: 400 });
+  }
+
+  // 3️⃣ Verify the user credentials
+  const userWithPasswordHash = await getUserWithPasswordHashInsecure(
+    result.data.username,
+  );
+  console.log('userWithPasswordHash:', userWithPasswordHash); // OUTPUT: userWithPasswordHash: {id: 1, username: 'Victor', passwordHash: '$2b$12$PF8RpayXLer3IbQhrjTW/OFnnxxxPDuEvEeryB6AWKzi1m.EH3Hr.'}
+
+  // If the user does not exist, return the error:
+  if (!userWithPasswordHash) {
+    return NextResponse.json(
+      { errors: [{ message: 'Username or password not valid' }] },
+      { status: 500 },
+    );
+  }
+
+  // 4️⃣ Validate the user password by comparing with hashed password
+  const passwordHash = await bcrypt.compare(
+    result.data.password,
+    userWithPasswordHash.passwordHash,
+  );
+  console.log('password:', result.data.password); // OUTPUT: password: 1234
+  console.log('passwordHash:', userWithPasswordHash.passwordHash); // OUTPUT: passwordHash: $2b$12$PF8RpayXLer3IbQhrjTW/OFnnxxxPDuEvEeryB6AWKzi1m.EH3Hr.
+  console.log('isMatch:', passwordHash); // OUTPUT: isMatch: true
+
+  // If the password does not exist, return the error:
+  if (!passwordHash) {
+    return NextResponse.json(
+      { errors: [{ message: 'Username or password not valid' }] },
+      { status: 500 },
+    );
+  }
+
+  // 5. Create a token
+  // 6. Create the session record
+  // 7. Send the new cookie in the headers
+
+  // 8️⃣ Return the new user information without the password hash
+  return NextResponse.json({
+    user: { username: userWithPasswordHash.username },
+  });
+}

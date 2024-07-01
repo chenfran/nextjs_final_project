@@ -1,12 +1,16 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ErrorMessage from '../../ErrorMessage';
+import { LoginResponseBodyPost } from '../api/login/route';
 
 export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
+
+  const router = useRouter();
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,11 +24,13 @@ export default function LoginForm() {
       },
     });
 
-    const data = await response.json();
+    const data: LoginResponseBodyPost = await response.json();
 
     if ('errors' in data) {
-      setErrors(data.errors);
+      return setErrors(data.errors);
     }
+
+    router.push(`/profile/${data.user.username}`);
   }
 
   return (

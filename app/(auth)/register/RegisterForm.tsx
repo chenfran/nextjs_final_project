@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ErrorMessage from '../../ErrorMessage';
 import { RegisterResponseBodyPost } from '../api/register/route';
@@ -8,6 +9,8 @@ export default function RegisterForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
+
+  const router = useRouter();
 
   async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,8 +27,10 @@ export default function RegisterForm() {
     const data: RegisterResponseBodyPost = await response.json();
 
     if ('errors' in data) {
-      setErrors(data.errors);
+      return setErrors(data.errors);
     }
+
+    router.push(`/profile/${data.user.username}`);
   }
 
   return (

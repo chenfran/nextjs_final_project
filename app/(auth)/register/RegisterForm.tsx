@@ -46,7 +46,7 @@ export default function RegisterForm() {
           onChange={(event) => setPassword(event.currentTarget.value)}
         />
       </label>
-      <button>Register</button>
+      <button className="btn btn-primary">Register</button>
 
       {errors.map((error) => (
         <div key={`error-${error.message}`}>

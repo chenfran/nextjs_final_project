@@ -30,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "daisyui": "^4.12.10",
     "eslint-config-upleveled": "^8.3.1",
     "libpg-query": "15.2.0-rc.deparse.3",
     "postcss": "^8",

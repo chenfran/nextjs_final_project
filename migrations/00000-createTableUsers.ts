@@ -1,4 +1,10 @@
 import { Sql } from 'postgres';
+import { z } from 'zod';
+
+export const userSchema = z.object({
+  username: z.string().min(3),
+  password: z.string().min(3),
+});
 
 export async function up(sql: Sql) {
   await sql`

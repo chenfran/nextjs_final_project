@@ -18,7 +18,7 @@ export const getUserInsecure = cache(async (username: string) => {
     FROM
       users
     WHERE
-      username = ${username}
+      username = ${username.toLowerCase()}
   `;
   return user;
 });
@@ -30,7 +30,7 @@ export const createUserInsecure = cache(
         users (username, password_hash)
       VALUES
         (
-          ${username},
+          ${username.toLowerCase()},
           ${passwordHash}
         )
       RETURNING
@@ -49,7 +49,7 @@ export const getUserWithPasswordHashInsecure = cache(
       FROM
         users
       WHERE
-        username = ${username}
+        username = ${username.toLowerCase()}
     `;
     return user;
   },

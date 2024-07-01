@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import ErrorMessage from '../../ErrorMessage';
+import { RegisterResponseBodyPost } from '../api/register/route';
 
 export default function RegisterForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
 
   async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,9 +21,11 @@ export default function RegisterForm() {
       },
     });
 
-    const data = await response.json();
+    const data: RegisterResponseBodyPost = await response.json();
 
-    console.log('data', data);
+    if ('errors' in data) {
+      setErrors(data.errors);
+    }
   }
 
   return (
@@ -42,6 +47,12 @@ export default function RegisterForm() {
         />
       </label>
       <button>Register</button>
+
+      {errors.map((error) => (
+        <div key={`error-${error.message}`}>
+          <ErrorMessage>{error.message}</ErrorMessage>
+        </div>
+      ))}
     </form>
   );
 }

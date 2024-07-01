@@ -7,7 +7,7 @@ import {
   User,
 } from '../../../../database/users';
 
-type RegisterResponseBodyPost =
+export type RegisterResponseBodyPost =
   | {
       user: User;
     }
@@ -45,7 +45,7 @@ export async function POST(
   if (user) {
     return NextResponse.json(
       { errors: [{ message: 'Username already taken' }] },
-      { status: 400 },
+      { status: 401 },
     );
   }
 
@@ -61,7 +61,7 @@ export async function POST(
   if (!newUser) {
     return NextResponse.json(
       { errors: [{ message: 'Registration failed' }] },
-      { status: 400 },
+      { status: 500 },
     );
   }
 

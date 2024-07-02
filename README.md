@@ -38,3 +38,7 @@ type Error = {
 - /api/(auth)/login
   - POST   => User   | Error[]   (login user)
 ```
+
+### Notes
+
+Cross-Site-Scripting used in /util/cookies.ts (XSS; deutsch Webseitenübergreifendes Skripting) bezeichnet das Ausnutzen einer Computersicherheitslücke in Webanwendungen, indem Informationen aus einem Kontext, in dem sie nicht vertrauenswürdig sind, in einen anderen Kontext eingefügt werden, in dem sie als vertrauenswürdig eingestuft werden.

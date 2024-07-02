@@ -8,6 +8,7 @@ import {
   User,
 } from '../../../../database/users';
 import { userSchema } from '../../../../migrations/00000-createTableUsers';
+import { secureCookieOptions } from '../../../../util/cookies';
 
 export type LoginResponseBodyPost =
   | {
@@ -65,7 +66,6 @@ export async function POST(
     );
   }
 
-  // createSessionInsecure
   // 5️⃣ Create a token
   const token = crypto.randomBytes(100).toString('base64');
   console.log('token:', token); // OUTPUT: token: kJX0JDzvK4xkfkFfngiIWIIigoEFUhL+/vqFxidIG7L1iAijya3pKJLLWCVUuYReiVnmNRHU4DrJ6YfgzUtzE21/3wkvFz7xjgyGrGldIHFOstSa1PoyPTVNX53330KFZbu5Kg==
@@ -87,11 +87,7 @@ export async function POST(
   cookies().set({
     name: 'sessionToken',
     value: session.token,
-    httpOnly: true,
-    path: '/',
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24,
-    sameSite: 'lax',
+    ...secureCookieOptions,
   });
 
   // 8️⃣ Return the new user information without the password hash

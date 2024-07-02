@@ -1,7 +1,13 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
+import { getUser } from '../database/users';
 import LogoutButton from './(auth)/logout/LogoutButton';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const sessionCookie = cookies().get('sessionToken');
+  const user = sessionCookie && (await getUser(sessionCookie.value));
+  console.log('user:', user); // OUTPUT: user: { username: 'victor' }
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -11,9 +17,17 @@ export default function Navbar() {
       </div>
 
       <div className="flex-none gap-2">
-        <Link href="/register">Register</Link>
-        <Link href="/login">Login</Link>
-        <LogoutButton />
+        {user ? (
+          <>
+            <Link href={`/profile/${user.username}`}>{user.username}</Link>
+            <LogoutButton />
+          </>
+        ) : (
+          <>
+            <Link href="/register">Register</Link>
+            <Link href="/login">Login</Link>
+          </>
+        )}
 
         <div className="dropdown dropdown-end">
           <div

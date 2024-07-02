@@ -3,11 +3,7 @@ import bcrypt from 'bcrypt';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { createSessionInsecure } from '../../../../database/sessions';
-import {
-  createUserInsecure,
-  getUserInsecure,
-  User,
-} from '../../../../database/users';
+import { createUserInsecure, getUser, User } from '../../../../database/users';
 import { userSchema } from '../../../../migrations/00000-createTableUsers';
 import { secureCookieOptions } from '../../../../util/cookies';
 
@@ -37,7 +33,7 @@ export async function POST(
   }
 
   // 3️⃣ Check if user already exist in the database
-  const user = await getUserInsecure(result.data.username);
+  const user = await getUser(result.data.username);
   console.log('user:', user); // OUTPUT: user: undefined
 
   // If there is a user, return the error:

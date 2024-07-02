@@ -10,15 +10,16 @@ type UserWithPasswordHash = User & {
   passwordHash: string;
 };
 
-export const getUserInsecure = cache(async (username: string) => {
-  const [user] = await sql<User[]>`
+export const getUser = cache(async (sessionToken: string) => {
+  const [user] = await sql<Pick<User, 'username'>[]>`
     SELECT
-      users.id,
       users.username
     FROM
       users
-    WHERE
-      username = ${username.toLowerCase()}
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND expiry_timestamp > now()
+      )
   `;
   return user;
 });

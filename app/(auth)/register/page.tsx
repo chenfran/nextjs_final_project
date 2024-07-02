@@ -1,5 +1,21 @@
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { getValidSession } from '../../../database/sessions';
 import RegisterForm from './RegisterForm';
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  // Task: Add redirect to home if user is logged in
+  // 1️⃣ Checking if the sessionToken cookie exists
+  const sessionCookie = cookies().get('sessionToken');
+
+  // 2️⃣ Check if the sessionToken cookie is still valid
+  // Call this function when sessionCookie is not undefined:
+  const session = sessionCookie && (await getValidSession(sessionCookie.value));
+
+  // 3️⃣ If the sessionToken cookie is valid, redirect to home
+  if (session) {
+    redirect(`/`);
+  }
+  // 4️⃣ If the sessionToken is invalid or doesn't exist, show the login form
   return <RegisterForm />;
 }

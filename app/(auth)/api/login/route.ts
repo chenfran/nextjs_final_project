@@ -1,5 +1,8 @@
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { createSessionInsecure } from '../../../../database/sessions';
 import {
   getUserWithPasswordHashInsecure,
   User,
@@ -62,9 +65,34 @@ export async function POST(
     );
   }
 
-  // 5. Create a token
-  // 6. Create the session record
-  // 7. Send the new cookie in the headers
+  // createSessionInsecure
+  // 5️⃣ Create a token
+  const token = crypto.randomBytes(100).toString('base64');
+  console.log('token:', token); // OUTPUT: token: kJX0JDzvK4xkfkFfngiIWIIigoEFUhL+/vqFxidIG7L1iAijya3pKJLLWCVUuYReiVnmNRHU4DrJ6YfgzUtzE21/3wkvFz7xjgyGrGldIHFOstSa1PoyPTVNX53330KFZbu5Kg==
+  console.log('tokenLength:', token.length); // OUTPUT: tokenLength: 136
+
+  // 6️⃣ Create the session record
+  const session = await createSessionInsecure(token, userWithPasswordHash.id);
+  console.log('sessions:', session); // OUTPUT: sessions: {id: 1, token: 'Une/9JqL4bHt1uTUACVKuWhRjv4BAlI6Yz/wQmuYkGQbR7I9gq3VUR8jYhsFtBE5/CkeG+wF4Cl82tlaACU7B8Mvpspz3b6B3IJ2E4Hbp4k4l3QPmuzJrdttb7eeljnKI8PqMg==', userId: 1}
+
+  // If there is no session, return the error:
+  if (!session) {
+    return NextResponse.json(
+      { errors: [{ message: 'Sessions creation failed' }] },
+      { status: 401 },
+    );
+  }
+
+  // 7️⃣ Send the new cookie in the headers
+  cookies().set({
+    name: 'sessionToken',
+    value: session.token,
+    httpOnly: true,
+    path: '/',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24,
+    sameSite: 'lax',
+  });
 
   // 8️⃣ Return the new user information without the password hash
   return NextResponse.json({

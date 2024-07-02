@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LogoutButton from './(auth)/logout/LogoutButton';
 
 export default function Navbar() {
   return (
@@ -12,6 +13,7 @@ export default function Navbar() {
       <div className="flex-none gap-2">
         <Link href="/register">Register</Link>
         <Link href="/login">Login</Link>
+        <LogoutButton />
 
         <div className="dropdown dropdown-end">
           <div

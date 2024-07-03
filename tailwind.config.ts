@@ -11,6 +11,9 @@ const config: Config = {
       fontFamily: {
         anton: ['Anton', 'sans-serif'],
       },
+      backgroundImage: {
+        'gradient-custom': 'linear-gradient(90deg, #0D2127 0%, #BA2522 100%)',
+      },
     },
   },
   plugins: [require('daisyui')],

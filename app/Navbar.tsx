@@ -12,7 +12,7 @@ export default async function Navbar() {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
-          black stories
+          <h1>black stories</h1>
         </Link>
       </div>
 
@@ -55,8 +55,9 @@ export default async function Navbar() {
         ) : (
           <>
             <Link href="/register">Register</Link>
-            <p> / </p>
-            <Link href="/login">Login</Link>
+            <Link className="btn btn-sm btn-success gap-2" href="/login">
+              Login
+            </Link>
           </>
         )}
       </div>

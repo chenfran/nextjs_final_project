@@ -5,6 +5,7 @@ import LogoutButton from './(auth)/logout/LogoutButton';
 
 export default async function Navbar() {
   const sessionCookie = cookies().get('sessionToken');
+  console.log('sessionCookie:', sessionCookie);
   const user = sessionCookie && (await getUser(sessionCookie.value));
   console.log('user:', user); // OUTPUT: user: { username: 'victor' }
 

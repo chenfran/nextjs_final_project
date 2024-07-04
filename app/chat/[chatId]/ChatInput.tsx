@@ -23,7 +23,6 @@ export default function ChatInput() {
           value={input}
           onChange={(event) => setInput(event.currentTarget.value)}
         />
-
         <div
           onClick={() => textareaRef.current?.focus()}
           className="py-2"

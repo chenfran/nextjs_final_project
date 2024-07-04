@@ -14,6 +14,7 @@ export default async function UserProfile(props: Props) {
 
   // 1️⃣ Checking if the sessionToken cookie exists
   const sessionCookie = cookies().get('sessionToken');
+  console.log('sessionCookie:', sessionCookie);
 
   // 2️⃣ Query the current user with the sessionToken
   const user = sessionCookie && (await getUser(sessionCookie.value));

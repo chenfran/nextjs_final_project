@@ -1,4 +1,7 @@
+import { cookies } from 'next/headers';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
+import { getUser } from '../../../database/users';
 import ChatInput from './ChatInput';
 
 type Props = {
@@ -7,18 +10,29 @@ type Props = {
   };
 };
 
-export default function ChatIdPage(props: Props) {
+export default async function ChatIdPage(props: Props) {
+  // 1️⃣ Checking if the sessionToken cookie exists
+  const sessionCookie = cookies().get('sessionToken');
+
+  // 2️⃣ Query the current user with the sessionToken
+  const user = sessionCookie && (await getUser(sessionCookie.value));
+
+  // 3️⃣ If user doesn't exist, redirect to login page
+  if (!user) {
+    redirect(`/login`);
+  }
+
   return (
-    <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)]">
+    <div className="flex-1 justify-between flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10  h-full max-h-[calc(100vh-6rem)]">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
-          <div className="relative">
-            <div className="relative w-8 sm:w-12 h-8 sm:h-12">
+          <div className="chat-image avatar">
+            <div className="w-10 rounded-full">
               <Image
-                fill
-                src="/bs-into-the-wild.webp"
-                alt="profile picture"
                 className="rounded-full"
+                src="/profile-image-placeholder.webp"
+                alt="profile picture"
+                fill
               />
             </div>
           </div>
@@ -26,13 +40,13 @@ export default function ChatIdPage(props: Props) {
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
               <span className="text-gray-700 mr-3 font-semibold">
-                {props.params.username}
+                {user.username.charAt(0).toUpperCase() + user.username.slice(1)}
               </span>
             </div>
 
-            <span className="text-sm text-gray-600">
-              {props.params.username}
-            </span>
+            {/* <span className="text-sm text-gray-600">
+              {user.username.charAt(0).toUpperCase() + user.username.slice(1)}
+            </span> */}
           </div>
         </div>
       </div>

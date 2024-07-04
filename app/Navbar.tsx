@@ -55,7 +55,10 @@ export default async function Navbar() {
         ) : (
           <>
             <Link href="/register">Register</Link>
-            <Link className="btn btn-sm btn-success gap-2" href="/login">
+            <Link
+              className="btn btn-sm bg-red-900 border-red-900 text-white gap-2"
+              href="/login"
+            >
               Login
             </Link>
           </>

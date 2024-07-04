@@ -35,7 +35,7 @@ export default async function UserProfile(props: Props) {
         <div className="text-white text-9xl text-center">
           <Link
             className="btn btn-primary bg-black border-black mr-10"
-            href="/"
+            href="/create-new-game"
           >
             create a new game
           </Link>

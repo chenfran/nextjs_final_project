@@ -66,7 +66,9 @@ export default function LoginForm(props: Props) {
           />
         </label>
         <div className="flex justify-end w-full">
-          <button className="btn btn-success gap-2">Login</button>
+          <button className="btn bg-red-900 border-red-900 text-white gap-2">
+            Login
+          </button>
         </div>
 
         {errors.map((error) => (

@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
+h1,
+.anton-font {
   @apply font-anton;
 }

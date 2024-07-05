@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
-import { getUser } from '../database/users';
-import LogoutButton from './(auth)/logout/LogoutButton';
+import LogoutButton from '../(auth)/logout/LogoutButton';
+import { getUser } from '../../database/users';
 
 export default async function Navbar() {
   const sessionCookie = cookies().get('sessionToken');
@@ -13,14 +13,19 @@ export default async function Navbar() {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
-          <h1>black stories</h1>
+          <h1 className="text-slate-700">black stories</h1>
         </Link>
       </div>
 
       <div className="flex-none gap-2">
         {user ? (
           <>
-            <Link href={`/profile/${user.username}`}>{user.username}</Link>
+            <Link
+              className="anton-font text-slate-700"
+              href={`/profile/${user.username}`}
+            >
+              {user.username}
+            </Link>
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}

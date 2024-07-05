@@ -4,13 +4,7 @@ import { redirect } from 'next/navigation';
 import { getUser } from '../../../database/users';
 import ChatInput from './ChatInput';
 
-type Props = {
-  params: {
-    username: string;
-  };
-};
-
-export default async function ChatIdPage(props: Props) {
+export default async function ChatIdPage() {
   // 1️⃣ Checking if the sessionToken cookie exists
   const sessionCookie = cookies().get('sessionToken');
 
@@ -39,8 +33,9 @@ export default async function ChatIdPage(props: Props) {
 
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
-              <span className="text-gray-700 mr-3 font-semibold">
-                {user.username.charAt(0).toUpperCase() + user.username.slice(1)}
+              <span className="text-gray-700 mr-3 font-semibold anton-font">
+                {user.username}
+                {/* {user.username.charAt(0).toUpperCase() + user.username.slice(1)} */}
               </span>
             </div>
 
@@ -58,6 +53,47 @@ export default async function ChatIdPage(props: Props) {
         initialMessages={initialMessages}
       /> */}
 
+      <div className="bg-black collapse collapse-plus">
+        <input type="checkbox" className="peer" />
+        <div className="collapse-title bg-black text-primary-content peer-checked:bg-black peer-checked:text-secondary-content font-bold flex">
+          Story
+        </div>
+        <div className="collapse-content bg-black text-primary-content peer-checked:bg-pink peer-checked:text-secondary-content flex items-center space-x-4 overflow-y-auto">
+          <Image
+            src="/bs-into-the-wild.webp"
+            alt="story card"
+            width={148}
+            height={48}
+          />
+          <p className="text-white text-center">
+            The man used the last eight minutes of his life to fulfil his
+            greatest wish.
+          </p>
+        </div>
+      </div>
+      {/* <div className="collapse w-full bg-black py-4 flex justify-center items-center">
+        <input type="radio" name="my-accordion-1" defaultChecked />
+        <div className="collapse-title flex items-center space-x-4 h-40 max-h-80 overflow-y-auto p-4">
+          Story
+          <div className="collapse-content">
+            <Image
+              src="/bs-into-the-wild.webp"
+              alt="story card"
+              width={148}
+              height={48}
+            />
+            <p className="text-white text-center">
+              Story: The man used the last eight minutes of his life to fulfil
+              his greatest wish. Story: The man used the last eight minutes of
+              his life to fulfil his greatest wish. Story: The man used the last
+              eight minutes of his life to fulfil his greatest wish. Story: The
+              man used.
+            </p>
+          </div>
+        </div>
+      </div> */}
+
+      {/* display chat messages */}
       <div className="chat chat-start">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">

@@ -41,9 +41,13 @@ export default function NewGameForm() {
             setErrorMessage(newErrorMessage);
             return;
           }
+          const data = await response.json();
+          console.log('data:', data); // OUTPUT: game: {story: 'dsagk adsjkf asdjfklads gjdkasfjadks'}
+
           setTitle('');
           setStory('');
 
+          router.push(`/games/${data.story}`);
           router.refresh();
         }}
       >

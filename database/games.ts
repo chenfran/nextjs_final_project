@@ -10,29 +10,39 @@ export const getGames = cache(async (sessionToken: string) => {
       games
       INNER JOIN sessions ON (
         sessions.token = ${sessionToken}
+        AND sessions.user_id = games.user_id
         AND expiry_timestamp > now()
       )
   `;
   return games;
 });
 
+export const getGame = cache(async (sessionToken: string, gameId: number) => {
+  const [game] = await sql<Game[]>`
+    SELECT
+      games.*
+    FROM
+      games
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND sessions.user_id = games.user_id
+        AND expiry_timestamp > now()
+      )
+    WHERE
+      games.id = ${gameId}
+  `;
+  return game;
+});
+
 export const createGame = cache(
-  async (sessionToken: string, newGame: Omit<Game, 'id'>) => {
+  async (sessionToken: string, title: string, story: string) => {
     const [game] = await sql<Game[]>`
       INSERT INTO
-        games (
-          user_id,
-          title,
-          story,
-          solution,
-          remaining_timestamp
-        ) (
+        games (user_id, title, story) (
           SELECT
-            ${newGame.userId},
-            ${newGame.title},
-            ${newGame.story},
-            ${newGame.solution},
-            ${newGame.remainingTimestamp}
+            user_id,
+            ${title},
+            ${story}
           FROM
             sessions
           WHERE
@@ -53,9 +63,7 @@ export const updateGame = cache(
       SET
         user_id = ${updatedGame.userId},
         title = ${updatedGame.title},
-        story = ${updatedGame.story},
-        solution = ${updatedGame.solution},
-        remaining_timestamp = ${updatedGame.remainingTimestamp}
+        story = ${updatedGame.story}
       FROM
         sessions
       WHERE
@@ -69,16 +77,18 @@ export const updateGame = cache(
   },
 );
 
-export const deleteGame = cache(async (sessionToken: string, id: number) => {
-  const [game] = await sql<Game[]>`
-    DELETE FROM games USING sessions
-    WHERE
-      sessions.token = ${sessionToken}
-      AND sessions.expiry_timestamp > now()
-      AND games.id = ${id}
-    RETURNING
-      games.*
-  `;
+export const deleteGame = cache(
+  async (sessionToken: string, gameId: number) => {
+    const [game] = await sql<Game[]>`
+      DELETE FROM games USING sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND games.id = ${gameId}
+      RETURNING
+        games.*
+    `;
 
-  return game;
-});
+    return game;
+  },
+);

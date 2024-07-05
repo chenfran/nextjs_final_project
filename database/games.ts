@@ -22,12 +22,14 @@ export const createGame = cache(
       INSERT INTO
         games (
           user_id,
+          title,
           story,
           solution,
           remaining_timestamp
         ) (
           SELECT
             ${newGame.userId},
+            ${newGame.title},
             ${newGame.story},
             ${newGame.solution},
             ${newGame.remainingTimestamp}
@@ -50,6 +52,7 @@ export const updateGame = cache(
       UPDATE games
       SET
         user_id = ${updatedGame.userId},
+        title = ${updatedGame.title},
         story = ${updatedGame.story},
         solution = ${updatedGame.solution},
         remaining_timestamp = ${updatedGame.remainingTimestamp}

@@ -25,9 +25,18 @@ export default async function GamePage(props: Props) {
 
   if (!singleGame) {
     return (
-      <div>
-        <h1>Restricted access</h1>
-        <Link href="/games">Please create a game</Link>
+      <div className="flex flex-col justify-center text-center pt-4">
+        <h1 className="text-4xl text-red-900 font-bold mb-8">
+          No game available
+        </h1>
+        <Link className="text-red-900" href="/games">
+          Please create a new game
+          <div className="flex justify-center w-full mt-10">
+            <button className="btn bg-red-900 border-red-900 text-white gap-2">
+              Create new game
+            </button>
+          </div>
+        </Link>
       </div>
     );
   }

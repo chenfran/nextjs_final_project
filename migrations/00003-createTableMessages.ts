@@ -1,10 +1,15 @@
 import { Sql } from 'postgres';
+import { z } from 'zod';
+
+export const messageSchema = z.object({
+  content: z.string().min(3),
+});
 
 export type Message = {
   id: number;
   senderId: number;
   gameId: number;
-  body: string;
+  content: string;
 };
 
 export async function up(sql: Sql) {
@@ -13,7 +18,7 @@ export async function up(sql: Sql) {
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       sender_id integer NOT NULL REFERENCES users (id) ON DELETE cascade,
       game_id integer NOT NULL REFERENCES games (id) ON DELETE cascade,
-      body text NOT NULL
+      content text NOT NULL
     );
   `;
 }

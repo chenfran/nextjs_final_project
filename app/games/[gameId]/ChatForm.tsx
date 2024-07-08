@@ -21,7 +21,7 @@ export default function ChatForm() {
           const response = await fetch('/api/messages', {
             method: 'POST',
             body: JSON.stringify({
-              input,
+              body: input,
             }),
             headers: {
               'Content-Type': 'application/json',

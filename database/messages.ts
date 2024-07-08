@@ -10,21 +10,40 @@ export const getMessages = cache(async (sessionToken: string) => {
       messages
       INNER JOIN sessions ON (
         sessions.token = ${sessionToken}
+        AND sessions.user_id = messages.sender_id
         AND expiry_timestamp > now()
       )
   `;
   return messages;
 });
 
+export const getMessage = cache(
+  async (sessionToken: string, messageId: number) => {
+    const [message] = await sql<Message[]>`
+      SELECT
+        messages.*
+      FROM
+        messages
+        INNER JOIN sessions ON (
+          sessions.token = ${sessionToken}
+          AND sessions.user_id = messages.sender_id
+          AND expiry_timestamp > now()
+        )
+      WHERE
+        messages.id = ${messageId}
+    `;
+    return message;
+  },
+);
+
 export const createMessage = cache(
-  async (sessionToken: string, newMessage: Omit<Message, 'id'>) => {
+  async (sessionToken: string, content: string) => {
     const [message] = await sql<Message[]>`
       INSERT INTO
-        messages (sender_id, game_id, body) (
+        messages (sender_id, content) (
           SELECT
-            ${newMessage.senderId},
-            ${newMessage.gameId},
-            ${newMessage.body}
+            user_id,
+            ${content}
           FROM
             sessions
           WHERE
@@ -39,26 +58,26 @@ export const createMessage = cache(
 );
 
 // Messages can't be edited, so I won't need this feature, but I'll keep it in case I want to add it later:
-// export const updateMessage = cache(
-//   async (sessionToken: string, updatedMessage: Message) => {
-//     const [message] = await sql<Message[]>`
-//       UPDATE messages
-//       SET
-//         sender_id = ${updatedMessage.senderId},
-//         game_id = ${updatedMessage.gameId},
-//         body = ${updatedMessage.body}
-//       FROM
-//         sessions
-//       WHERE
-//         sessions.token = ${sessionToken}
-//         AND sessions.expiry_timestamp > now()
-//         AND messages.id = ${updatedMessage.id}
-//       RETURNING
-//         messages.*
-//     `;
-//     return message;
-//   },
-// );
+export const updateMessage = cache(
+  async (sessionToken: string, updatedMessage: Message) => {
+    const [message] = await sql<Message[]>`
+      UPDATE messages
+      SET
+        sender_id = ${updatedMessage.senderId},
+        game_id = ${updatedMessage.gameId},
+        content = ${updatedMessage.content}
+      FROM
+        sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND messages.id = ${updatedMessage.id}
+      RETURNING
+        messages.*
+    `;
+    return message;
+  },
+);
 
 export const deleteMessage = cache(async (sessionToken: string, id: number) => {
   const [message] = await sql<Message[]>`

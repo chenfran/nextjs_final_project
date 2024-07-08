@@ -1,3 +1,5 @@
+import ChatForm from './ChatForm';
+
 export default function GameId() {
-  return;
+  return <ChatForm />;
 }

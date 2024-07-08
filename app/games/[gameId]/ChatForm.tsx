@@ -3,7 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function ChatForm() {
+type Props = {
+  gameId: number;
+};
+
+export default function ChatForm({ gameId }: Props) {
   const [input, setInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -22,6 +26,7 @@ export default function ChatForm() {
             method: 'POST',
             body: JSON.stringify({
               content: input,
+              gameId: gameId,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -41,6 +46,8 @@ export default function ChatForm() {
             setErrorMessage(newErrorMessage);
             return;
           }
+          const data = await response.json();
+          console.log('data:', data);
 
           setInput('');
 

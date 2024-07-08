@@ -32,5 +32,5 @@ export default async function GamePage(props: Props) {
     );
   }
 
-  return <ChatForm />;
+  return <ChatForm gameId={singleGame.id} />;
 }

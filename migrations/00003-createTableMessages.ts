@@ -2,7 +2,7 @@ import { Sql } from 'postgres';
 import { z } from 'zod';
 
 export const messageSchema = z.object({
-  content: z.string().min(3),
+  content: z.string(),
 });
 
 export type Message = {

@@ -31,7 +31,7 @@ export default function ChatForm() {
           setErrorMessage('');
 
           if (!response.ok) {
-            let newErrorMessage = 'Error creating game';
+            let newErrorMessage = 'Error creating message';
 
             try {
               const body = await response.json();

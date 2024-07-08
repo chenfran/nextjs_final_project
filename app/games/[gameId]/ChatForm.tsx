@@ -3,27 +3,25 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function NewGameForm() {
-  const [title, setTitle] = useState('');
-  const [story, setStory] = useState('');
+export default function ChatForm() {
+  const [input, setInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
   return (
     <div className="flex flex-col justify-center text-center pt-4">
-      <h1 className="text-4xl font-bold mb-8">Create a new game</h1>
+      <h1 className="text-4xl font-bold mb-8">Play the game</h1>
 
       <form
         className="flex flex-col items-center w-full max-w-md mx-auto"
         onSubmit={async (event) => {
           event.preventDefault();
 
-          const response = await fetch('/api/game', {
+          const response = await fetch('/api/messages', {
             method: 'POST',
             body: JSON.stringify({
-              title,
-              story,
+              input,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -43,36 +41,24 @@ export default function NewGameForm() {
             setErrorMessage(newErrorMessage);
             return;
           }
-          const data = await response.json();
 
-          setTitle('');
-          setStory('');
+          setInput('');
 
-          router.push(`/games/${data.game.id}`);
           router.refresh();
         }}
       >
         <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
-          Title
+          Your message
           <input
             className="grow"
-            value={title}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-          />
-        </label>
-
-        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full h-24">
-          Description
-          <input
-            className="grow"
-            value={story}
-            onChange={(event) => setStory(event.currentTarget.value)}
+            value={input}
+            onChange={(event) => setInput(event.currentTarget.value)}
           />
         </label>
 
         <div className="flex justify-end w-full">
           <button className="btn bg-red-900 border-red-900 text-white gap-2">
-            Submit
+            Send
           </button>
         </div>
       </form>

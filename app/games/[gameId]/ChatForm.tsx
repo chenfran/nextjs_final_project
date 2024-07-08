@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { Message } from '../../../migrations/00003-createTableMessages';
 
 type Props = {
   gameId: number;
@@ -9,16 +10,38 @@ type Props = {
 
 export default function ChatForm({ gameId }: Props) {
   const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<Message[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const router = useRouter();
 
   return (
-    <div className="flex flex-col justify-center text-center pt-4">
-      <h1 className="text-4xl font-bold mb-8">Play the game</h1>
+    <div className="border-t border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
+      <div className="chat chat-start">
+        <div className="chat-image avatar">
+          <div className="w-10 rounded-full">
+            <img
+              alt="Tailwind CSS chat bubble component"
+              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            />
+          </div>
+        </div>
+        <div className="chat-header">Username</div>
+        <div className="chat-bubble">
+          {messages.map((message) => (
+            <div
+              key={`messages-${message.id}`}
+              className="w-full p-2 mb-2 border border-gray-300 rounded"
+            >
+              {message.content}
+            </div>
+          ))}
+        </div>
+      </div>
 
       <form
-        className="flex flex-col items-center w-full max-w-md mx-auto"
+        className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
         onSubmit={async (event) => {
           event.preventDefault();
 
@@ -46,27 +69,47 @@ export default function ChatForm({ gameId }: Props) {
             setErrorMessage(newErrorMessage);
             return;
           }
+
           const data = await response.json();
-          console.log('data:', data);
+
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              id: data.message.id,
+              content: data.message.content,
+              userId: data.message.userId,
+              gameId: data.message.gameId,
+            },
+          ]);
 
           setInput('');
 
           router.refresh();
         }}
       >
-        <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
-          Your message
-          <input
-            className="grow"
-            value={input}
-            onChange={(event) => setInput(event.currentTarget.value)}
-          />
-        </label>
+        <input
+          className="ml-4 block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
+          value={input}
+          placeholder="Your message"
+          onChange={(event) => setInput(event.currentTarget.value)}
+        />
 
-        <div className="flex justify-end w-full">
-          <button className="btn bg-red-900 border-red-900 text-white gap-2">
-            Send
-          </button>
+        <div
+          onClick={() => textareaRef.current?.focus()}
+          className="py-2"
+          aria-hidden="true"
+        >
+          <div className="py-px">
+            <div className="h-9" />
+          </div>
+        </div>
+
+        <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+          <div className="flex-shrink-0">
+            <button className="btn bg-red-900 border-red-900 text-white gap-2">
+              Send
+            </button>
+          </div>
         </div>
       </form>
 

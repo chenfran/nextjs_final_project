@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { getGameInsecure } from '../../../database/games';
 import { createMessage } from '../../../database/messages';
 import { messageSchema } from '../../../migrations/00003-createTableMessages';
 
@@ -11,7 +12,14 @@ export type MessagesResponseBodyPost =
       error: string;
     };
 
+type Props = {
+  params: {
+    gameId: string;
+  };
+};
+
 export async function POST(
+  props: Props,
   request: NextRequest,
 ): Promise<NextResponse<MessagesResponseBodyPost>> {
   // Task: Create a new message for the current logged in user
@@ -35,10 +43,16 @@ export async function POST(
   // Checking if the sessionToken cookie exists or get the token from the cookie
   const sessionTokenCookie = cookies().get('sessionToken');
 
+  const singleGame = await getGameInsecure(Number(props.params.gameId));
+
   // Create a message
   const newMessage =
     sessionTokenCookie &&
-    (await createMessage(sessionTokenCookie.value, result.data.content));
+    (await createMessage(
+      sessionTokenCookie.value,
+      singleGame?.id,
+      result.data.content,
+    ));
 
   // If the message creation fails, return an error
   if (!newMessage) {

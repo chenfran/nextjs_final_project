@@ -13,6 +13,7 @@ export default function NewGameForm() {
   return (
     <div className="flex flex-col justify-center text-center pt-4">
       <h1 className="text-4xl font-bold mb-8">Create a new game</h1>
+
       <form
         className="flex flex-col items-center w-full max-w-md mx-auto"
         onSubmit={async (event) => {
@@ -24,6 +25,9 @@ export default function NewGameForm() {
               title,
               story,
             }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
           });
 
           setErrorMessage('');
@@ -34,20 +38,18 @@ export default function NewGameForm() {
             try {
               const body = await response.json();
               newErrorMessage = body.error;
-            } catch (error) {
-              console.log(error);
-            }
+            } catch {}
 
             setErrorMessage(newErrorMessage);
             return;
           }
           const data = await response.json();
-          console.log('data:', data); // OUTPUT: game: {story: 'dsagk adsjkf asdjfklads gjdkasfjadks'}
+          console.log('data:', data); // OUTPUT: game: {id: 4, title: "Into the wild", story: "A man died again"}
 
           setTitle('');
           setStory('');
 
-          router.push(`/games/${data.story}`);
+          router.push(`/games/${data.game.id}`);
           router.refresh();
         }}
       >

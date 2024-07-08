@@ -57,6 +57,8 @@ export async function POST(
   // Return the text content of the game
   return NextResponse.json({
     game: {
+      id: newGame.id,
+      title: newGame.title,
       story: newGame.story,
     },
   });

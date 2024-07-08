@@ -35,13 +35,10 @@ export default async function UserProfile(props: Props) {
       <div className="w-full py-28">
         <div className="text-white text-9xl text-center">
           <Link
-            className="btn btn-primary bg-black border-black mr-10"
+            className="btn text-white bg-black border-black mr-10"
             href="/games"
           >
             create a new game
-          </Link>
-          <Link className="btn btn-primary bg-red-900 border-red-900" href="/">
-            join a game
           </Link>
         </div>
       </div>

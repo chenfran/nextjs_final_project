@@ -32,10 +32,8 @@ export default function Home() {
           <div className="card-body">
             <h2 className="card-title">Bathed too hot</h2>
             <span>
-              <span className="font-bold">
-                A whole rescue team searched for him.
-              </span>
-              But his body was never found.
+              <span className="font-bold">A whole rescue team </span>searched
+              for him. But his body was never found.
             </span>
             <div className="card-actions justify-end">
               <Link

@@ -10,7 +10,7 @@ export const getMessages = cache(async (sessionToken: string) => {
       messages
       INNER JOIN sessions ON (
         sessions.token = ${sessionToken}
-        AND sessions.user_id = messages.sender_id
+        AND sessions.user_id = messages.user_id
         AND expiry_timestamp > now()
       )
   `;
@@ -26,7 +26,7 @@ export const getMessage = cache(
         messages
         INNER JOIN sessions ON (
           sessions.token = ${sessionToken}
-          AND sessions.user_id = messages.sender_id
+          AND sessions.user_id = messages.user_id
           AND expiry_timestamp > now()
         )
       WHERE
@@ -37,12 +37,13 @@ export const getMessage = cache(
 );
 
 export const createMessage = cache(
-  async (sessionToken: string, content: string) => {
+  async (sessionToken: string, gameId: number, content: string) => {
     const [message] = await sql<Message[]>`
       INSERT INTO
-        messages (sender_id, content) (
+        messages (user_id, game_id, content) (
           SELECT
             user_id,
+            ${gameId},
             ${content}
           FROM
             sessions
@@ -63,7 +64,7 @@ export const updateMessage = cache(
     const [message] = await sql<Message[]>`
       UPDATE messages
       SET
-        sender_id = ${updatedMessage.senderId},
+        user_id = ${updatedMessage.userId},
         game_id = ${updatedMessage.gameId},
         content = ${updatedMessage.content}
       FROM

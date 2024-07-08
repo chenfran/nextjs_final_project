@@ -54,7 +54,8 @@ export async function POST(
   return NextResponse.json({
     message: {
       id: newMessage.id,
-      userId: newMessage.senderId,
+      userId: newMessage.userId,
+      gameId: newMessage.gameId,
       content: newMessage.content,
     },
   });

@@ -7,7 +7,7 @@ export const messageSchema = z.object({
 
 export type Message = {
   id: number;
-  senderId: number;
+  userId: number;
   gameId: number;
   content: string;
 };
@@ -16,7 +16,7 @@ export async function up(sql: Sql) {
   await sql`
     CREATE TABLE messages (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-      sender_id integer NOT NULL REFERENCES users (id) ON DELETE cascade,
+      user_id integer NOT NULL REFERENCES users (id) ON DELETE cascade,
       game_id integer NOT NULL REFERENCES games (id) ON DELETE cascade,
       content text NOT NULL
     );

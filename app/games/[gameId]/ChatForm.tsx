@@ -33,7 +33,12 @@ export default function ChatForm({ params, userId, gameId }: Props) {
           >
             <p className="text-sm">{message.content}</p>
             <p className="text-xs text-gray-500">
-              {message.userId === userId ? 'You' : message.username}
+              {message.userId === userId
+                ? 'You'
+                : message.username
+                  ? message.username.charAt(0).toUpperCase() +
+                    message.username.slice(1)
+                  : ''}
             </p>
           </div>
         </div>

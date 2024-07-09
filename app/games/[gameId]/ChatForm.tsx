@@ -2,38 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import {
-  Message,
-  MessageWithUsername,
-} from '../../../migrations/00003-createTableMessages';
-
-// type Props = {
-//   userId: number;
-//   gameId: number;
-//   initialMessages: Message[];
-//   username: string | null;
-// };
-
-// type Props = {
-//   userId: number;
-//   gameId: number;
-//   initialMessages: MessageWithUsername[];
-//   username: string | null;
-// };
+import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
 
 type Props = {
-  params: {
-    userId: number;
-    gameId: number;
-    content: string;
-    username: string | null;
-  };
+  params: MessageWithUsername[];
   userId: number;
+  gameId: number;
 };
 
-export default function ChatForm({ userId, params }: Props) {
+export default function ChatForm({ params, userId, gameId }: Props) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState(params);
+  const [messages, setMessages] = useState<MessageWithUsername[]>(params);
   const [errorMessage, setErrorMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
   const router = useRouter();
@@ -69,7 +48,7 @@ export default function ChatForm({ userId, params }: Props) {
             method: 'POST',
             body: JSON.stringify({
               content: input,
-              gameId: params.gameId,
+              gameId: gameId,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -99,6 +78,7 @@ export default function ChatForm({ userId, params }: Props) {
               content: data.message.content,
               userId: data.message.userId,
               gameId: data.message.gameId,
+              username: data.message.username,
             },
           ]);
 

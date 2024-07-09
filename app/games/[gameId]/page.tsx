@@ -93,7 +93,11 @@ export default async function GamePage(props: Props) {
           </div>
         </div>
       </div>
-      <ChatForm userId={user.id} params={messagesWithUsernames} />
+      <ChatForm
+        params={messagesWithUsernames}
+        userId={user.id}
+        gameId={singleGame.id}
+      />
       {/* <ChatForm
         userId={userId.id}
         gameId={singleGame.id}

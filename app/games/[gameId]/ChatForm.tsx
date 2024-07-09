@@ -5,20 +5,45 @@ import { useRef, useState } from 'react';
 import { Message } from '../../../migrations/00003-createTableMessages';
 
 type Props = {
+  userId: number;
   gameId: number;
+  initialMessages: Message[];
+  username: string;
 };
 
-export default function ChatForm({ gameId }: Props) {
+export default function ChatForm({
+  userId,
+  gameId,
+  initialMessages,
+  username,
+}: Props) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [errorMessage, setErrorMessage] = useState('');
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
   const router = useRouter();
+
+  const messageTextIsEmpty = input.trim().length === 0; // messageTextIsEmpty is used to disable the send button when the textarea is empty
 
   return (
     <div className="border-t border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
-      <div className="chat chat-start">
+      {messages.map((message) => (
+        <div
+          key={`messages-${message.id}`}
+          className={`flex ${message.userId === userId ? 'justify-end' : 'justify-start'} mb-4`}
+        >
+          <div
+            className={`p-2 rounded ${message.userId === userId ? 'bg-blue-200' : 'bg-gray-200'}`}
+          >
+            <p className="text-sm">{message.content}</p>
+            <p className="text-xs text-gray-500">
+              {message.userId === userId ? 'You' : ` ${username}`}
+            </p>
+          </div>
+        </div>
+      ))}
+
+      {/* <div className="chat chat-start">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
             <img
@@ -32,13 +57,13 @@ export default function ChatForm({ gameId }: Props) {
           {messages.map((message) => (
             <div
               key={`messages-${message.id}`}
-              className="w-full p-2 mb-2 border border-gray-300 rounded"
+              className="w-full p-2 mb-2 rounded"
             >
               {message.content}
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <form
         className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
@@ -106,7 +131,10 @@ export default function ChatForm({ gameId }: Props) {
 
         <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
           <div className="flex-shrink-0">
-            <button className="btn bg-red-900 border-red-900 text-white gap-2">
+            <button
+              className="btn bg-red-900 border-red-900 text-white gap-2"
+              disabled={messageTextIsEmpty}
+            >
               Send
             </button>
           </div>

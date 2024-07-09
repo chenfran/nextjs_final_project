@@ -25,6 +25,22 @@ export const getUser = cache(async (sessionToken: string) => {
   return user;
 });
 
+export const getUserWithId = cache(async (sessionToken: string) => {
+  const [user] = await sql<User[]>`
+    SELECT
+      users.id,
+      users.username
+    FROM
+      users
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND users.id = sessions.user_id
+        AND expiry_timestamp > now()
+      )
+  `;
+  return user;
+});
+
 export const createUserInsecure = cache(
   async (username: string, passwordHash: string) => {
     const [user] = await sql<User[]>`

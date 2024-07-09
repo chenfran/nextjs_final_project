@@ -1,7 +1,10 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { createMessage } from '../../../database/messages';
-import { messageSchema } from '../../../migrations/00003-createTableMessages';
+import { createMessage, getMessagesInsecure } from '../../../database/messages';
+import {
+  Message,
+  messageSchema,
+} from '../../../migrations/00003-createTableMessages';
 
 export type MessagesResponseBodyPost =
   | {
@@ -63,4 +66,32 @@ export async function POST(
       content: newMessage.content,
     },
   });
+}
+
+export type MessagesResponseBodyGet =
+  | {
+      messages: Message[];
+    }
+  | {
+      error: string;
+    };
+
+export type Props = {
+  params: { gameId: string };
+};
+
+export async function GET(
+  request: NextRequest,
+  { params }: Props,
+): Promise<NextResponse<MessagesResponseBodyGet>> {
+  // Task: Get messages to display it on the gameId page
+
+  const sessionCookie = request.cookies.get('sessionToken');
+  if (!sessionCookie) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const messages = await getMessagesInsecure(Number(params.gameId));
+
+  return NextResponse.json({ messages });
 }

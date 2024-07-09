@@ -2,20 +2,24 @@ import { cache } from 'react';
 import { Message } from '../migrations/00003-createTableMessages';
 import { sql } from './connect';
 
-export const getMessages = cache(async (sessionToken: string) => {
-  const messages = await sql<Message[]>`
-    SELECT
-      messages.*
-    FROM
-      messages
-      INNER JOIN sessions ON (
-        sessions.token = ${sessionToken}
-        AND sessions.user_id = messages.user_id
-        AND expiry_timestamp > now()
-      )
-  `;
-  return messages;
-});
+export const getMessages = cache(
+  async (sessionToken: string, gameId: number) => {
+    const messages = await sql<Message[]>`
+      SELECT
+        messages.*
+      FROM
+        messages
+        INNER JOIN sessions ON (
+          sessions.token = ${sessionToken}
+          AND sessions.user_id = messages.user_id
+          AND expiry_timestamp > now()
+        )
+      WHERE
+        messages.game_id = ${gameId}
+    `;
+    return messages;
+  },
+);
 
 export const getMessage = cache(
   async (sessionToken: string, messageId: number) => {
@@ -35,6 +39,18 @@ export const getMessage = cache(
     return message;
   },
 );
+
+export const getMessagesInsecure = cache(async (gameId: number) => {
+  const messages = await sql<Message[]>`
+    SELECT
+      messages.*
+    FROM
+      messages
+    WHERE
+      messages.game_id = ${gameId}
+  `;
+  return messages;
+});
 
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {

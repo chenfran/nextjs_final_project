@@ -3,8 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
+import { getMessagesInsecure } from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
-import { getUser } from '../../../database/users';
+import { getUser, getUserWithId } from '../../../database/users';
 import ChatForm from './ChatForm';
 
 type Props = {
@@ -49,6 +50,15 @@ export default async function GamePage(props: Props) {
     );
   }
 
+  const initialMessages = await getMessagesInsecure(
+    Number(props.params.gameId),
+  );
+
+  const userId = await getUserWithId(sessionCookie.value);
+  if (!userId) {
+    redirect(`/login`);
+  }
+
   return (
     <div className="flex-1 justify-between flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
       <h1 className="text-4xl font-bold">Play the game</h1>
@@ -74,7 +84,14 @@ export default async function GamePage(props: Props) {
           </div>
         </div>
       </div>
-      <ChatForm gameId={singleGame.id} />
+      <ChatForm
+        userId={userId.id}
+        gameId={singleGame.id}
+        initialMessages={initialMessages}
+        username={
+          user.username.charAt(0).toUpperCase() + user.username.slice(1)
+        }
+      />
     </div>
   );
 }

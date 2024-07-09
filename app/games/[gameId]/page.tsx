@@ -3,7 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
-import { getMessagesInsecure } from '../../../database/messages';
+import {
+  getMessagesInsecure,
+  getMessagesWithUsernamesInsecure,
+} from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
 import { getUser, getUserWithId } from '../../../database/users';
 import ChatForm from './ChatForm';
@@ -53,11 +56,17 @@ export default async function GamePage(props: Props) {
   const initialMessages = await getMessagesInsecure(
     Number(props.params.gameId),
   );
+  console.log('initialMessages:', initialMessages);
 
   const userId = await getUserWithId(sessionCookie.value);
   if (!userId) {
     redirect(`/login`);
   }
+
+  const messagesWithUsernames = await getMessagesWithUsernamesInsecure(
+    Number(props.params.gameId),
+  );
+  console.log('messagesWithUsernames:', messagesWithUsernames);
 
   return (
     <div className="flex-1 justify-between flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
@@ -84,14 +93,24 @@ export default async function GamePage(props: Props) {
           </div>
         </div>
       </div>
-      <ChatForm
+      <ChatForm userId={user.id} params={messagesWithUsernames} />
+      {/* <ChatForm
         userId={userId.id}
         gameId={singleGame.id}
         initialMessages={initialMessages}
         username={
           user.username.charAt(0).toUpperCase() + user.username.slice(1)
         }
-      />
+      /> */}
+      {/* {messagesWithUsernames.map((message) => (
+        <ChatForm
+          key={`messages-${message.id}`}
+          userId={message.userId}
+          gameId={message.gameId}
+          initialMessages={initialMessages}
+          username={message.username}
+        />
+      ))} */}
     </div>
   );
 }

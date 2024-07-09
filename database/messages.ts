@@ -1,5 +1,8 @@
 import { cache } from 'react';
-import { Message } from '../migrations/00003-createTableMessages';
+import {
+  Message,
+  MessageWithUsername,
+} from '../migrations/00003-createTableMessages';
 import { sql } from './connect';
 
 export const getMessages = cache(
@@ -51,6 +54,22 @@ export const getMessagesInsecure = cache(async (gameId: number) => {
   `;
   return messages;
 });
+
+export const getMessagesWithUsernamesInsecure = cache(
+  async (gameId: number) => {
+    const messages = await sql<MessageWithUsername[]>`
+      SELECT
+        messages.*,
+        users.username
+      FROM
+        messages
+        LEFT JOIN users ON (messages.user_id = users.id)
+      WHERE
+        messages.game_id = ${gameId}
+    `;
+    return messages;
+  },
+);
 
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {

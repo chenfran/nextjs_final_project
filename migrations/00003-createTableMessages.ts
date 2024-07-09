@@ -12,6 +12,14 @@ export type Message = {
   content: string;
 };
 
+export type MessageWithUsername = {
+  id: number;
+  userId: number;
+  gameId: number;
+  content: string;
+  username: string | null;
+};
+
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE messages (

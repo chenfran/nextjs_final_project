@@ -2,28 +2,45 @@
 
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { Message } from '../../../migrations/00003-createTableMessages';
+import {
+  Message,
+  MessageWithUsername,
+} from '../../../migrations/00003-createTableMessages';
+
+// type Props = {
+//   userId: number;
+//   gameId: number;
+//   initialMessages: Message[];
+//   username: string | null;
+// };
+
+// type Props = {
+//   userId: number;
+//   gameId: number;
+//   initialMessages: MessageWithUsername[];
+//   username: string | null;
+// };
 
 type Props = {
+  params: {
+    userId: number;
+    gameId: number;
+    content: string;
+    username: string | null;
+  };
   userId: number;
-  gameId: number;
-  initialMessages: Message[];
-  username: string;
 };
 
-export default function ChatForm({
-  userId,
-  gameId,
-  initialMessages,
-  username,
-}: Props) {
+export default function ChatForm({ userId, params }: Props) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState(params);
   const [errorMessage, setErrorMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
   const router = useRouter();
 
   const messageTextIsEmpty = input.trim().length === 0; // messageTextIsEmpty is used to disable the send button when the textarea is empty
+
+  console.log('params:', params);
 
   return (
     <div className="border-t border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
@@ -37,33 +54,11 @@ export default function ChatForm({
           >
             <p className="text-sm">{message.content}</p>
             <p className="text-xs text-gray-500">
-              {message.userId === userId ? 'You' : ` ${username}`}
+              {message.userId === userId ? 'You' : message.username}
             </p>
           </div>
         </div>
       ))}
-
-      {/* <div className="chat chat-start">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS chat bubble component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            />
-          </div>
-        </div>
-        <div className="chat-header">Username</div>
-        <div className="chat-bubble">
-          {messages.map((message) => (
-            <div
-              key={`messages-${message.id}`}
-              className="w-full p-2 mb-2 rounded"
-            >
-              {message.content}
-            </div>
-          ))}
-        </div>
-      </div> */}
 
       <form
         className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
@@ -74,7 +69,7 @@ export default function ChatForm({
             method: 'POST',
             body: JSON.stringify({
               content: input,
-              gameId: gameId,
+              gameId: params.gameId,
             }),
             headers: {
               'Content-Type': 'application/json',

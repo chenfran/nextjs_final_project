@@ -101,7 +101,8 @@ export const updateMessage = cache(
       SET
         user_id = ${updatedMessage.userId},
         game_id = ${updatedMessage.gameId},
-        content = ${updatedMessage.content}
+        content = ${updatedMessage.content},
+        timestamp = ${updatedMessage.timestamp}
       FROM
         sessions
       WHERE

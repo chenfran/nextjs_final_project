@@ -10,6 +10,7 @@ export type Message = {
   userId: number;
   gameId: number;
   content: string;
+  timestamp: Date;
 };
 
 export type MessageWithUsername = {
@@ -17,6 +18,7 @@ export type MessageWithUsername = {
   userId: number;
   gameId: number;
   content: string;
+  timestamp: Date;
   username: string | null;
 };
 
@@ -26,7 +28,8 @@ export async function up(sql: Sql) {
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       user_id integer NOT NULL REFERENCES users (id) ON DELETE cascade,
       game_id integer NOT NULL REFERENCES games (id) ON DELETE cascade,
-      content text NOT NULL
+      content text NOT NULL,
+      timestamp timestamp NOT NULL DEFAULT now()
     );
   `;
 }

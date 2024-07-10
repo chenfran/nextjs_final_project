@@ -66,7 +66,9 @@ export default async function GamePage(props: Props) {
   const messagesWithUsernames = await getMessagesWithUsernamesInsecure(
     Number(props.params.gameId),
   );
-  console.log('messagesWithUsernames:', messagesWithUsernames);
+
+  const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
+  console.log('reversedMessagesWithUsernames:', reversedMessagesWithUsernames);
 
   return (
     <div className="flex-1 flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
@@ -85,7 +87,7 @@ export default async function GamePage(props: Props) {
         </div>
       </div>
       <ChatForm
-        params={messagesWithUsernames}
+        params={reversedMessagesWithUsernames}
         userId={user.id}
         gameId={singleGame.id}
       />

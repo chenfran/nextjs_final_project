@@ -1,5 +1,5 @@
 type Props = {
-  username: string;
+  username: string | null;
   className?: string;
 };
 

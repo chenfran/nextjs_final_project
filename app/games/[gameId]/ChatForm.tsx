@@ -23,26 +23,28 @@ export default function ChatForm({ params, userId, gameId }: Props) {
 
   return (
     <div className="border-t border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
-      {messages.map((message) => (
-        <div
-          key={`messages-${message.id}`}
-          className={`flex ${message.userId === userId ? 'justify-end' : 'justify-start'} mb-4`}
-        >
+      <div className="overflow-y-auto max-h-96">
+        {messages.map((message) => (
           <div
-            className={`p-2 rounded ${message.userId === userId ? 'bg-blue-200' : 'bg-gray-200'}`}
+            key={`messages-${message.id}`}
+            className={`flex ${message.userId === userId ? 'justify-end' : 'justify-start'} mb-4`}
           >
-            <p className="text-sm">{message.content}</p>
-            <p className="text-xs text-gray-500">
-              {message.userId === userId
-                ? 'You'
-                : message.username
-                  ? message.username.charAt(0).toUpperCase() +
-                    message.username.slice(1)
-                  : ''}
-            </p>
+            <div
+              className={`p-2 rounded ${message.userId === userId ? 'bg-blue-200 text-right' : 'bg-gray-200 text-left'} text-sm`}
+            >
+              <p>{message.content}</p>
+              <p className="text-xs text-gray-500">
+                {message.userId === userId
+                  ? 'You'
+                  : message.username
+                    ? message.username.charAt(0).toUpperCase() +
+                      message.username.slice(1)
+                    : ''}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       <form
         className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
@@ -93,7 +95,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
         }}
       >
         <input
-          className="ml-4 block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
+          className="ml-4 block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
           value={input}
           placeholder="Your message"
           onChange={(event) => setInput(event.currentTarget.value)}
@@ -112,7 +114,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
         <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
           <div className="flex-shrink-0">
             <button
-              className="btn bg-red-900 border-red-900 text-white gap-2"
+              className={`btn bg-red-900 border-red-900 text-white gap-2 ${messageTextIsEmpty ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={messageTextIsEmpty}
             >
               Send
@@ -120,8 +122,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
           </div>
         </div>
       </form>
-
-      <div>{errorMessage}</div>
+      <div className="text-red-500 mt-2">{errorMessage}</div>
     </div>
   );
 }

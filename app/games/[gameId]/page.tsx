@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers';
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
@@ -9,6 +8,7 @@ import {
 } from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
 import { getUser, getUserWithId } from '../../../database/users';
+import TextAvatar from '../../components/TextAvatar';
 import ChatForm from './ChatForm';
 
 type Props = {
@@ -41,7 +41,7 @@ export default async function GamePage(props: Props) {
         <h1 className="text-4xl text-red-900 font-bold mb-8">
           No game available
         </h1>
-        <Link className="text-red-900" href="/games">
+        <Link className="text-red-900 mb-8" href="/games">
           Please create a new game
           <div className="flex justify-center w-full mt-10">
             <button className="btn bg-red-900 border-red-900 text-white gap-2">
@@ -69,27 +69,18 @@ export default async function GamePage(props: Props) {
   console.log('messagesWithUsernames:', messagesWithUsernames);
 
   return (
-    <div className="flex-1 justify-between flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
-      <h1 className="text-4xl font-bold">Play the game</h1>
+    <div className="flex-1 flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
+      <h1 className="text-4xl font-bold mb-4 text-center">Play the game</h1>
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
-        <div className="relative flex items-center space-x-4">
-          <div className="chat-image avatar">
-            <div className="w-10 rounded-full">
-              <Image
-                className="rounded-full"
-                src="/profile-image-placeholder.webp"
-                alt="profile picture"
-                fill
-              />
-            </div>
+        <div className="flex items-center space-x-4">
+          <div className="w-10 h-10 rounded-full overflow-hidden">
+            <TextAvatar username={user.username} />
           </div>
 
-          <div className="flex flex-col leading-tight">
-            <div className="text-xl flex items-center">
-              <span className="text-gray-700 mr-3 font-semibold anton-font">
-                {user.username}
-              </span>
-            </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-semibold text-gray-700">
+              {user.username}
+            </span>
           </div>
         </div>
       </div>
@@ -98,23 +89,6 @@ export default async function GamePage(props: Props) {
         userId={user.id}
         gameId={singleGame.id}
       />
-      {/* <ChatForm
-        userId={userId.id}
-        gameId={singleGame.id}
-        initialMessages={initialMessages}
-        username={
-          user.username.charAt(0).toUpperCase() + user.username.slice(1)
-        }
-      /> */}
-      {/* {messagesWithUsernames.map((message) => (
-        <ChatForm
-          key={`messages-${message.id}`}
-          userId={message.userId}
-          gameId={message.gameId}
-          initialMessages={initialMessages}
-          username={message.username}
-        />
-      ))} */}
     </div>
   );
 }

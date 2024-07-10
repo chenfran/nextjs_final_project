@@ -10,6 +10,8 @@ Description:
 - Postgres.js
 - Ley Migration
 - bcrypt
+- date-fns library for formatting timestamps
+-
 
 ## Authentication
 

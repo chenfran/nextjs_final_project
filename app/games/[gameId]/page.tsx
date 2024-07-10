@@ -2,10 +2,7 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
-import {
-  getMessagesInsecure,
-  getMessagesWithUsernamesInsecure,
-} from '../../../database/messages';
+import { getMessagesWithUsernamesInsecure } from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
 import { getUser, getUserWithId } from '../../../database/users';
 import TextAvatar from '../../components/TextAvatar';
@@ -53,11 +50,6 @@ export default async function GamePage(props: Props) {
     );
   }
 
-  const initialMessages = await getMessagesInsecure(
-    Number(props.params.gameId),
-  );
-  console.log('initialMessages:', initialMessages);
-
   const userId = await getUserWithId(sessionCookie.value);
   if (!userId) {
     redirect(`/login`);
@@ -68,7 +60,6 @@ export default async function GamePage(props: Props) {
   );
 
   const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
-  console.log('reversedMessagesWithUsernames:', reversedMessagesWithUsernames);
 
   return (
     <div className="flex-1 flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">

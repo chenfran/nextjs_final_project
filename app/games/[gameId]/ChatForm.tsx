@@ -18,7 +18,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
   const [errorMessage, setErrorMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
   const router = useRouter();
-
+  let messageEnd = null;
   const messageTextIsEmpty = input.trim().length === 0; // messageTextIsEmpty is used to disable the send button when the textarea is empty
   const handleSubmit = async (
     event:
@@ -70,12 +70,12 @@ export default function ChatForm({ params, userId, gameId }: Props) {
     router.refresh();
   };
 
-  const scrollDownRef = useRef<HTMLDivElement | null>(null); // ❗️to scroll down to the new message
+  const scrollDownRef = useRef<HTMLDivElement | null>(null); // Scroll down to the new message
   const formatTimestamp = (timestamp: Date) => {
     const hours = timestamp.getHours().toString().padStart(2, '0');
     const minutes = timestamp.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
-  }; // ❗️to get a specific format for the timestamp
+  }; // Get a specific format for the timestamp
 
   return (
     <div className="border-t border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
@@ -109,15 +109,18 @@ export default function ChatForm({ params, userId, gameId }: Props) {
       <div className="flex h-full flex-1 flex-col-reverse">
         <div id="messages" className="overflow-y-auto max-h-96">
           <div ref={scrollDownRef} />
-          {messages.reverse().map((message, index) => {
+          {messages.map((message, index) => {
             console.log('Message timestamp after mapping:', message.timestamp);
             const isCurrentUser = message.userId === userId;
 
             const hasNextMessageFromSameUser =
-              messages[index - 1]?.userId === messages[index]?.userId; // ❗️check if there is a same message from the same user
+              messages[index - 1]?.userId === messages[index]?.userId; // Check if there is a same message from the same user
 
             return (
-              <div key={`messages-${message.id}`} className="chat-message">
+              <div
+                key={`${message.id}-${Number(message.timestamp)}`}
+                className="chat-message"
+              >
                 <div
                   className={`flex items-end ${isCurrentUser ? 'justify-end' : ''}`}
                 >
@@ -143,6 +146,11 @@ export default function ChatForm({ params, userId, gameId }: Props) {
                             : ''}
                       </p>
                     </span>
+                    <div
+                      ref={(element) => {
+                        messageEnd = element;
+                      }}
+                    />
                   </div>
 
                   <div

@@ -22,6 +22,8 @@
     "react-textarea-autosize": "^8.5.3",
     "sass": "^1.77.6",
     "server-only": "^0.0.1",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "tsx": "^4.16.0",
     "zod": "^3.23.8"
   },
@@ -33,7 +35,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "daisyui": "^4.12.10",
-    "eslint-config-upleveled": "^8.3.1",
+    "eslint-config-upleveled": "^8.5.0",
     "libpg-query": "15.2.0-rc.deparse.3",
     "postcss": "^8",
     "prettier": "^3.3.2",

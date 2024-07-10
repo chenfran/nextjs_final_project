@@ -19,6 +19,8 @@ export const getMessages = cache(
         )
       WHERE
         messages.game_id = ${gameId}
+      ORDER BY
+        messages.id DESC
     `;
     return messages;
   },
@@ -38,6 +40,8 @@ export const getMessage = cache(
         )
       WHERE
         messages.id = ${messageId}
+      ORDER BY
+        messages.id DESC
     `;
     return message;
   },
@@ -51,6 +55,8 @@ export const getMessagesInsecure = cache(async (gameId: number) => {
       messages
     WHERE
       messages.game_id = ${gameId}
+    ORDER BY
+      messages.id DESC
   `;
   return messages;
 });
@@ -66,6 +72,8 @@ export const getMessagesWithUsernamesInsecure = cache(
         LEFT JOIN users ON (messages.user_id = users.id)
       WHERE
         messages.game_id = ${gameId}
+      ORDER BY
+        messages.id DESC
     `;
     return messages;
   },

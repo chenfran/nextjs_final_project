@@ -7,6 +7,8 @@ import { getValidSession } from '../../../database/sessions';
 import { getUser, getUserWithId } from '../../../database/users';
 import TextAvatar from '../../components/TextAvatar';
 import ChatForm from './ChatForm';
+import ChatInputYoutube from './ChatInput';
+import MessagesYoutube from './Messages';
 
 type Props = {
   params: {
@@ -62,26 +64,38 @@ export default async function GamePage(props: Props) {
   const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
 
   return (
-    <div className="flex-1 flex flex-col pl-2 lg:pl-10 pr-2 lg:pr-10">
-      <h1 className="text-4xl font-bold mb-4 text-center">Play the game</h1>
+    <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)] ml-4 mr-4">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
-        <div className="flex items-center space-x-4">
-          <div className="w-10 h-10 rounded-full overflow-hidden">
-            <TextAvatar username={user.username} />
+        <div className="relative flex items-center space-x-4">
+          <div className="relative">
+            <div className="relative w-8 sm:w-12 h-8 sm:h-12">
+              <TextAvatar username={user.username} />
+            </div>
           </div>
 
-          <div className="flex flex-col">
-            <span className="text-xl font-semibold text-gray-700">
-              {user.username}
-            </span>
+          <div className="flex flex-col leading-tight">
+            <div className="text-xl flex items-center">
+              <span className="text-gray-700 mr-3 font-semibold">
+                {user.username}
+              </span>
+            </div>
+            <span className="text-sm text-gray-600">Welcome to the game!</span>
           </div>
         </div>
       </div>
-      <ChatForm
+      <MessagesYoutube
+        params={reversedMessagesWithUsernames}
+        userId={user.id}
+      />
+      <ChatInputYoutube
+        params={reversedMessagesWithUsernames}
+        gameId={singleGame.id}
+      />
+      {/* <ChatForm
         params={reversedMessagesWithUsernames}
         userId={user.id}
         gameId={singleGame.id}
-      />
+      /> */}
     </div>
   );
 }

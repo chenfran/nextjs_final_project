@@ -2,13 +2,11 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
-import { getMessagesWithUsernamesInsecure } from '../../../database/messages';
+import { getMessagesInsecure } from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
 import { getUser, getUserWithId } from '../../../database/users';
 import TextAvatar from '../../components/TextAvatar';
 import ChatForm from './ChatForm';
-import ChatInputYoutube from './ChatInput';
-import MessagesYoutube from './Messages';
 
 type Props = {
   params: {
@@ -57,11 +55,11 @@ export default async function GamePage(props: Props) {
     redirect(`/login`);
   }
 
-  const messagesWithUsernames = await getMessagesWithUsernamesInsecure(
+  const messagesWithUsernames = await getMessagesInsecure(
     Number(props.params.gameId),
   );
 
-  const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
+  // const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
 
   return (
     <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)] ml-4 mr-4">
@@ -83,19 +81,11 @@ export default async function GamePage(props: Props) {
           </div>
         </div>
       </div>
-      <MessagesYoutube
-        params={reversedMessagesWithUsernames}
-        userId={user.id}
-      />
-      <ChatInputYoutube
-        params={reversedMessagesWithUsernames}
-        gameId={singleGame.id}
-      />
-      {/* <ChatForm
-        params={reversedMessagesWithUsernames}
+      <ChatForm
+        params={messagesWithUsernames}
         userId={user.id}
         gameId={singleGame.id}
-      /> */}
+      />
     </div>
   );
 }

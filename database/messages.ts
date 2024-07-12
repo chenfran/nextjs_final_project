@@ -20,7 +20,7 @@ export const getMessages = cache(
       WHERE
         messages.game_id = ${gameId}
       ORDER BY
-        messages.id DESC
+        messages.id
     `;
     return messages;
   },
@@ -41,43 +41,45 @@ export const getMessage = cache(
       WHERE
         messages.id = ${messageId}
       ORDER BY
-        messages.id DESC
+        messages.id
     `;
     return message;
   },
 );
 
 export const getMessagesInsecure = cache(async (gameId: number) => {
-  const messages = await sql<Message[]>`
+  const messages = await sql<MessageWithUsername[]>`
     SELECT
-      messages.*
+      messages.*,
+      users.username
     FROM
       messages
+      LEFT JOIN users ON (messages.user_id = users.id)
     WHERE
       messages.game_id = ${gameId}
     ORDER BY
-      messages.id DESC
+      messages.id
   `;
   return messages;
 });
 
-export const getMessagesWithUsernamesInsecure = cache(
-  async (gameId: number) => {
-    const messages = await sql<MessageWithUsername[]>`
-      SELECT
-        messages.*,
-        users.username
-      FROM
-        messages
-        LEFT JOIN users ON (messages.user_id = users.id)
-      WHERE
-        messages.game_id = ${gameId}
-      ORDER BY
-        messages.id DESC
-    `;
-    return messages;
-  },
-);
+// export const getMessagesWithUsernamesInsecure = cache(
+//   async (gameId: number) => {
+//     const messages = await sql<MessageWithUsername[]>`
+//       SELECT
+//         messages.*,
+//         users.username
+//       FROM
+//         messages
+//         LEFT JOIN users ON (messages.user_id = users.id)
+//       WHERE
+//         messages.game_id = ${gameId}
+//       ORDER BY
+//         messages.id DESC
+//     `;
+//     return messages;
+//   },
+// );
 
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {

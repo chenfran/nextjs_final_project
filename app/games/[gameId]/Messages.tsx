@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
 import { pusherClient } from '../../../util/pusher';
 import { formatDate, toPusherKey } from '../../../util/utils';
-import Reactions from '../../components/Reactions';
 
 type Props = {
   params: MessageWithUsername[];
@@ -14,10 +13,6 @@ type Props = {
 
 export default function Messages({ params, userId, gameId }: Props) {
   const [messages, setMessages] = useState<MessageWithUsername[]>(params);
-  console.log(
-    'Timestamp of last message:',
-    messages[messages.length - 1]?.timestamp,
-  );
 
   // Scroll down to the new message
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
@@ -83,7 +78,6 @@ export default function Messages({ params, userId, gameId }: Props) {
                               message.username.slice(1)
                             : ''}
                       </p>
-                      <Reactions />
                     </span>
                   </div>
                 </div>

@@ -14,13 +14,20 @@ type Props = {
 };
 
 export default function ChatForm({ params, userId, gameId }: Props) {
-  const [input, setInput] = useState('');
   const [messages, setMessages] = useState<MessageWithUsername[]>(params);
 
+  const [input, setInput] = useState('');
+
   const [errorMessage, setErrorMessage] = useState('');
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
+
+  // textareaRef is used to focus the textarea below
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
   const router = useRouter();
-  const messageTextIsEmpty = input.trim().length === 0; // messageTextIsEmpty is used to disable the send button when the textarea is empty
+
+  // messageTextIsEmpty is used to disable the send button when the textarea is empty
+  const messageTextIsEmpty = input.trim().length === 0;
+
   const handleSubmit = async (
     event:
       | React.FormEvent<HTMLFormElement>
@@ -91,6 +98,13 @@ export default function ChatForm({ params, userId, gameId }: Props) {
       <div className="flex h-full flex-1 flex-col-reverse">
         <div id="messages" className="overflow-y-auto max-h-96">
           {messages.map((message, index) => {
+            console.log(
+              'Timestamp:',
+              message.timestamp,
+              'Type:',
+              typeof message.timestamp,
+            );
+
             const isCurrentUser = message.userId === userId;
 
             const hasNextMessageFromSameUser =
@@ -115,7 +129,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
                     >
                       {message.content}{' '}
                       <span className="ml-2 text-xs text-gray-400">
-                        {formatDate(message.timestamp || new Date())}
+                        {formatDate(message.timestamp)}
                       </span>
                       <p className="text-xs text-gray-400">
                         {message.userId === userId
@@ -164,7 +178,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
             </div>
 
             <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
-              <div className="flex-shrin-0">
+              <div className="flex-shrink-0">
                 <button
                   className={`btn bg-red-900 border-red-900 text-white gap-2 ${messageTextIsEmpty ? 'opacity-50 cursor-not-allowed' : ''}`}
                   disabled={messageTextIsEmpty}

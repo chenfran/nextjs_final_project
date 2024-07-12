@@ -15,20 +15,20 @@ type Props = {
 };
 
 export default async function GamePage(props: Props) {
-  // Task: Protect the game page and redirect to login if the user is not logged in
+  // Protect the game page and redirect to login if the user is not logged in
   const sessionCookie = cookies().get('sessionToken');
   const session = sessionCookie && (await getValidSession(sessionCookie.value));
   if (!session) {
     redirect(`/login?returnTo=/games/${props.params.gameId}`);
   }
 
-  // Task: Check if the user exist
+  // Check if the user exist
   const user = await getUser(sessionCookie.value);
   if (!user) {
     redirect(`/login`);
   }
 
-  // Task: Restrict access to the game page only if the game exists
+  // Restrict access to the game page only if the game exists
   const singleGame = await getGameInsecure(Number(props.params.gameId));
   console.log('singleGame:', singleGame);
 
@@ -50,16 +50,16 @@ export default async function GamePage(props: Props) {
     );
   }
 
+  // Get user ID
   const userId = await getUserWithId(sessionCookie.value);
   if (!userId) {
     redirect(`/login`);
   }
 
+  // Get game ID
   const messagesWithUsernames = await getMessagesInsecure(
     Number(props.params.gameId),
   );
-
-  // const reversedMessagesWithUsernames = messagesWithUsernames.reverse();
 
   return (
     <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)] ml-4 mr-4">

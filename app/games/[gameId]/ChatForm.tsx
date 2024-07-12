@@ -1,10 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
-import { formatDate } from '../../../util/utils';
+import { pusherClient } from '../../../util/pusher';
+import { formatDate, toPusherKey } from '../../../util/utils';
 
 type Props = {
   params: MessageWithUsername[];
@@ -15,6 +16,7 @@ type Props = {
 export default function ChatForm({ params, userId, gameId }: Props) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<MessageWithUsername[]>(params);
+
   const [errorMessage, setErrorMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textareaRef is used to focus the textarea below
   const router = useRouter();
@@ -53,24 +55,35 @@ export default function ChatForm({ params, userId, gameId }: Props) {
 
     const data = await response.json();
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        id: data.message.id,
-        userId: data.message.userId,
-        gameId: data.message.gameId,
-        content: data.message.content,
-        timestamp: new Date(data.message.timestamp),
-        username: data.message.username,
-      },
-    ]);
-
     setInput('');
     router.refresh();
     return data;
   };
 
-  const scrollDownRef = useRef<HTMLDivElement | null>(null); // Scroll down to the new message
+  // Scroll down to the new message
+  const scrollDownRef = useRef<HTMLDivElement | null>(null);
+  // Scroll to the bottom when messages change
+  useEffect(() => {
+    if (scrollDownRef.current) {
+      scrollDownRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  // Use Pusher for real-time functionality:
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`game:${gameId}`));
+
+    const messageHandler = (message: MessageWithUsername) => {
+      setMessages((prev) => [...prev, message]);
+    };
+
+    pusherClient.bind('incoming-message', messageHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`game:${gameId}`));
+      pusherClient.unbind('incoming-message', messageHandler);
+    };
+  }, [gameId]);
 
   return (
     <div className="border-gray-200 px-4 pt-4 mb-4 sm:mb-6">
@@ -96,15 +109,15 @@ export default function ChatForm({ params, userId, gameId }: Props) {
                   >
                     <span
                       className={`px-4 py-2 rounded-lg inline-block
-                      ${isCurrentUser ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-900'}
+                      ${isCurrentUser ? 'bg-red-900 text-white' : 'bg-gray-200 text-gray-900'}
                       ${!hasNextMessageFromSameUser && isCurrentUser ? 'rounded-br-none' : ''}
                       ${!hasNextMessageFromSameUser && !isCurrentUser ? 'rounded-bl-none' : ''}`}
                     >
                       {message.content}{' '}
                       <span className="ml-2 text-xs text-gray-400">
-                        {formatDate(message.timestamp)}
+                        {formatDate(message.timestamp || new Date())}
                       </span>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-400">
                         {message.userId === userId
                           ? 'You'
                           : message.username

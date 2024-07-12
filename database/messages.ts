@@ -63,24 +63,6 @@ export const getMessagesInsecure = cache(async (gameId: number) => {
   return messages;
 });
 
-// export const getMessagesWithUsernamesInsecure = cache(
-//   async (gameId: number) => {
-//     const messages = await sql<MessageWithUsername[]>`
-//       SELECT
-//         messages.*,
-//         users.username
-//       FROM
-//         messages
-//         LEFT JOIN users ON (messages.user_id = users.id)
-//       WHERE
-//         messages.game_id = ${gameId}
-//       ORDER BY
-//         messages.id DESC
-//     `;
-//     return messages;
-//   },
-// );
-
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {
     const [message] = await sql<Message[]>`

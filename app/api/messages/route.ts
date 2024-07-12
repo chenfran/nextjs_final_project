@@ -5,6 +5,8 @@ import {
   Message,
   messageSchema,
 } from '../../../migrations/00003-createTableMessages';
+import { pusherServer } from '../../../util/pusher';
+import { toPusherKey } from '../../../util/utils';
 
 export type MessagesResponseBodyPost =
   | {
@@ -56,6 +58,19 @@ export async function POST(
       { status: 400 },
     );
   }
+
+  // notify all connected chat room clients
+  await pusherServer.trigger(
+    toPusherKey(`game:${Number(body.gameId)}`),
+    'incoming-message',
+    {
+      id: newMessage.id,
+      userId: newMessage.userId,
+      gameId: newMessage.gameId,
+      content: newMessage.content,
+      timeStamp: newMessage.timestamp,
+    },
+  );
 
   // Return the text content of the message
   return NextResponse.json({

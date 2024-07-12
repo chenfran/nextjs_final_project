@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
@@ -15,6 +14,10 @@ type Props = {
 
 export default function ChatForm({ params, userId, gameId }: Props) {
   const [messages, setMessages] = useState<MessageWithUsername[]>(params);
+  console.log(
+    'Username of last message:',
+    messages[messages.length - 1]?.username,
+  );
 
   const [input, setInput] = useState('');
 
@@ -22,8 +25,6 @@ export default function ChatForm({ params, userId, gameId }: Props) {
 
   // textareaRef is used to focus the textarea below
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const router = useRouter();
 
   // messageTextIsEmpty is used to disable the send button when the textarea is empty
   const messageTextIsEmpty = input.trim().length === 0;
@@ -63,7 +64,6 @@ export default function ChatForm({ params, userId, gameId }: Props) {
     const data = await response.json();
 
     setInput('');
-    router.refresh();
     return data;
   };
 
@@ -129,7 +129,7 @@ export default function ChatForm({ params, userId, gameId }: Props) {
                     >
                       {message.content}{' '}
                       <span className="ml-2 text-xs text-gray-400">
-                        {formatDate(message.timestamp)}
+                        {formatDate(new Date(message.timestamp))}
                       </span>
                       <p className="text-xs text-gray-400">
                         {message.userId === userId

@@ -4,9 +4,10 @@ import { redirect } from 'next/navigation';
 import { getGameInsecure } from '../../../database/games';
 import { getMessagesInsecure } from '../../../database/messages';
 import { getValidSession } from '../../../database/sessions';
-import { getUser, getUserWithId } from '../../../database/users';
+import { getUser } from '../../../database/users';
 import TextAvatar from '../../components/TextAvatar';
-import ChatForm from './ChatForm';
+import ChatInput from './ChatInput';
+import Messages from './Messages';
 
 type Props = {
   params: {
@@ -30,7 +31,6 @@ export default async function GamePage(props: Props) {
 
   // Restrict access to the game page only if the game exists
   const singleGame = await getGameInsecure(Number(props.params.gameId));
-  console.log('singleGame:', singleGame);
 
   if (!singleGame) {
     return (
@@ -50,19 +50,11 @@ export default async function GamePage(props: Props) {
     );
   }
 
-  // Get user ID
-  const userId = await getUserWithId(sessionCookie.value);
-  if (!userId) {
-    redirect(`/login`);
-  }
-
-  // Get game ID
-  const messagesWithUsernames = await getMessagesInsecure(
-    Number(props.params.gameId),
-  );
+  // Get params
+  const params = await getMessagesInsecure(Number(props.params.gameId));
 
   return (
-    <div className="flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)] ml-4 mr-4">
+    <div className="flex flex-col h-screen max-h-screen ml-4 mr-4">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
           <div className="relative">
@@ -70,22 +62,24 @@ export default async function GamePage(props: Props) {
               <TextAvatar username={user.username} />
             </div>
           </div>
-
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
               <span className="text-gray-700 mr-3 font-semibold">
                 {user.username}
               </span>
             </div>
-            <span className="text-sm text-gray-600">Welcome to the game!</span>
+            <span className="text-sm text-gray-600">
+              Title: {singleGame.title} - Story: {singleGame.story}
+            </span>
           </div>
         </div>
       </div>
-      <ChatForm
-        params={messagesWithUsernames}
-        userId={user.id}
-        gameId={singleGame.id}
-      />
+      <div className="flex-1 overflow-y-auto">
+        <Messages params={params} userId={user.id} gameId={singleGame.id} />
+      </div>
+      <div className="border-t border-gray-200">
+        <ChatInput gameId={singleGame.id} />
+      </div>
     </div>
   );
 }

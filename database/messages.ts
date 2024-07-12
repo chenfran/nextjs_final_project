@@ -65,7 +65,7 @@ export const getMessagesInsecure = cache(async (gameId: number) => {
 
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {
-    const [message] = await sql<Message[]>`
+    const [message] = await sql<MessageWithUsername[]>`
       INSERT INTO
         messages (user_id, game_id, content) (
           SELECT
@@ -74,16 +74,47 @@ export const createMessage = cache(
             ${content}
           FROM
             sessions
+            INNER JOIN users ON (sessions.user_id = users.id)
           WHERE
             token = ${sessionToken}
             AND sessions.expiry_timestamp > now()
         )
       RETURNING
-        messages.*
+        messages.*,
+        (
+          SELECT
+            username
+          FROM
+            users
+          WHERE
+            id = messages.user_id
+        ) AS username
     `;
     return message;
   },
 );
+
+// export const createMessage = cache(
+//   async (sessionToken: string, gameId: number, content: string) => {
+//     const [message] = await sql<Message[]>`
+//       INSERT INTO
+//         messages (user_id, game_id, content) (
+//           SELECT
+//             user_id,
+//             ${gameId},
+//             ${content}
+//           FROM
+//             sessions
+//           WHERE
+//             token = ${sessionToken}
+//             AND sessions.expiry_timestamp > now()
+//         )
+//       RETURNING
+//         messages.*
+//     `;
+//     return message;
+//   },
+// );
 
 // Messages can't be edited, so I won't need this feature, but I'll keep it in case I want to add it later:
 export const updateMessage = cache(

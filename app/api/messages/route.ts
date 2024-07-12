@@ -68,7 +68,8 @@ export async function POST(
       userId: newMessage.userId,
       gameId: newMessage.gameId,
       content: newMessage.content,
-      timeStamp: newMessage.timestamp,
+      timestamp: newMessage.timestamp,
+      username: newMessage.username,
     },
   );
 
@@ -80,6 +81,7 @@ export async function POST(
       gameId: newMessage.gameId,
       content: newMessage.content,
       timestamp: newMessage.timestamp,
+      username: newMessage.username,
     },
   });
 }

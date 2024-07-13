@@ -2,6 +2,7 @@ import { cache } from 'react';
 import {
   Message,
   MessageWithUsername,
+  MessageWithUsernameAndReaction,
 } from '../migrations/00003-createTableMessages';
 import { sql } from './connect';
 
@@ -48,13 +49,17 @@ export const getMessage = cache(
 );
 
 export const getMessagesInsecure = cache(async (gameId: number) => {
-  const messages = await sql<MessageWithUsername[]>`
+  const messages = await sql<MessageWithUsernameAndReaction[]>`
     SELECT
       messages.*,
-      users.username
+      users.username,
+      reactions.emoji
     FROM
       messages
       LEFT JOIN users ON (messages.user_id = users.id)
+      LEFT JOIN reactions ON (
+        messages.id = reactions.message_id
+      )
     WHERE
       messages.game_id = ${gameId}
     ORDER BY
@@ -65,30 +70,36 @@ export const getMessagesInsecure = cache(async (gameId: number) => {
 
 export const createMessage = cache(
   async (sessionToken: string, gameId: number, content: string) => {
-    const [message] = await sql<MessageWithUsername[]>`
-      INSERT INTO
-        messages (user_id, game_id, content) (
+    const [message] = await sql<MessageWithUsernameAndReaction[]>`
+      WITH
+        user_info AS (
           SELECT
-            user_id,
-            ${gameId},
-            ${content}
+            sessions.user_id,
+            users.username
           FROM
             sessions
             INNER JOIN users ON (sessions.user_id = users.id)
           WHERE
-            token = ${sessionToken}
+            sessions.token = ${sessionToken}
             AND sessions.expiry_timestamp > now()
         )
+      INSERT INTO
+        messages (user_id, game_id, content)
+      SELECT
+        user_info.user_id,
+        ${gameId},
+        ${content}
+      FROM
+        user_info
       RETURNING
         messages.*,
         (
           SELECT
             username
           FROM
-            users
-          WHERE
-            id = messages.user_id
-        ) AS username
+            user_info
+        ) AS username,
+        NULL AS emoji
     `;
     return message;
   },

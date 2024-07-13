@@ -22,6 +22,16 @@ export type MessageWithUsername = {
   username: string | null;
 };
 
+export type MessageWithUsernameAndReaction = {
+  id: number;
+  userId: number;
+  gameId: number;
+  content: string;
+  timestamp: Date;
+  username: string | null;
+  emoji: string | null;
+};
+
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE messages (

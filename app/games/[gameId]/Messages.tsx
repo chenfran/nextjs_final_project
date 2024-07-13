@@ -1,19 +1,20 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
+import { MessageWithUsernameAndReaction } from '../../../migrations/00003-createTableMessages';
 import { pusherClient } from '../../../util/pusher';
 import { formatDate, toPusherKey } from '../../../util/utils';
 import Reactions from '../../components/Reactions';
 
 type Props = {
-  params: MessageWithUsername[];
+  params: MessageWithUsernameAndReaction[];
   userId: number;
   gameId: number;
 };
 
 export default function Messages({ params, userId, gameId }: Props) {
-  const [messages, setMessages] = useState<MessageWithUsername[]>(params);
+  const [messages, setMessages] =
+    useState<MessageWithUsernameAndReaction[]>(params);
 
   // Scroll down to the new message
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
@@ -28,7 +29,7 @@ export default function Messages({ params, userId, gameId }: Props) {
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`game:${gameId}`));
 
-    const messageHandler = (message: MessageWithUsername) => {
+    const messageHandler = (message: MessageWithUsernameAndReaction) => {
       setMessages((prev) => [...prev, message]);
     };
 
@@ -79,12 +80,12 @@ export default function Messages({ params, userId, gameId }: Props) {
                               message.username.slice(1)
                             : ''}
                       </p>
+                      <Reactions
+                        messageId={message.id}
+                        userId={message.userId}
+                        currentReaction={message.emoji}
+                      />
                     </span>
-                    <Reactions
-                      messageId={message.gameId}
-                      userId={message.userId}
-                      currentReaction={message.reaction}
-                    />
                   </div>
                 </div>
               </div>

@@ -70,6 +70,7 @@ export async function POST(
       content: newMessage.content,
       timestamp: newMessage.timestamp,
       username: newMessage.username,
+      emoji: newMessage.emoji,
     },
   );
 
@@ -82,6 +83,7 @@ export async function POST(
       content: newMessage.content,
       timestamp: newMessage.timestamp,
       username: newMessage.username,
+      emoji: newMessage.emoji,
     },
   });
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageWithUsername } from '../../../migrations/00003-createTableMessages';
 import { pusherClient } from '../../../util/pusher';
 import { formatDate, toPusherKey } from '../../../util/utils';
+import Reactions from '../../components/Reactions';
 
 type Props = {
   params: MessageWithUsername[];
@@ -79,6 +80,11 @@ export default function Messages({ params, userId, gameId }: Props) {
                             : ''}
                       </p>
                     </span>
+                    <Reactions
+                      messageId={message.gameId}
+                      userId={message.userId}
+                      currentReaction={message.reaction}
+                    />
                   </div>
                 </div>
               </div>

@@ -35,18 +35,24 @@ export default function Reactions({
 
   return (
     <div className="flex space-x-2 mt-2">
-      <button
-        className={`p-2 rounded-full ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
-        onClick={() => handleReaction('👍')}
-      >
-        👍
-      </button>
-      <button
-        className={`p-2 rounded-full ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
-        onClick={() => handleReaction('👎')}
-      >
-        👎
-      </button>
+      {!reaction ? (
+        <>
+          <button
+            className={`p-2 rounded-full ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+            onClick={() => handleReaction('👍')}
+          >
+            👍
+          </button>
+          <button
+            className={`p-2 rounded-full ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+            onClick={() => handleReaction('👎')}
+          >
+            👎
+          </button>
+        </>
+      ) : (
+        <p>{reaction}</p>
+      )}
     </div>
   );
 }

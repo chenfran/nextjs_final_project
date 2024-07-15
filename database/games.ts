@@ -34,6 +34,16 @@ export const getGame = cache(async (sessionToken: string, gameId: number) => {
   return game;
 });
 
+export const getGamesInsecure = cache(async () => {
+  const games = await sql<Game[]>`
+    SELECT
+      *
+    FROM
+      games
+  `;
+  return games;
+});
+
 export const getGameInsecure = cache(async (id: number) => {
   const [game] = await sql<Game[]>`
     SELECT

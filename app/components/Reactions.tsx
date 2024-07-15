@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Reaction } from '../../migrations/00004-createTableReactions';
+import { pusherClient } from '../../util/pusher';
+import { toPusherKey } from '../../util/utils';
 
 type Props = {
   messageId: number;
@@ -32,6 +35,22 @@ export default function Reactions({
       setReaction(emoji);
     }
   };
+
+  // // Use Pusher for real-time functionality:
+  // useEffect(() => {
+  //   pusherClient.subscribe(toPusherKey(`message:${messageId}`));
+
+  //   const reactionHandler = (reactions: Reaction) => {
+  //     setReaction(reactions.emoji);
+  //   };
+
+  //   pusherClient.bind('incoming-reaction', reactionHandler);
+
+  //   return () => {
+  //     pusherClient.unsubscribe(toPusherKey(`message:${messageId}`));
+  //     pusherClient.unbind('incoming-reaction', reactionHandler);
+  //   };
+  // }, [messageId]);
 
   return (
     <div className="flex space-x-2 mt-2">

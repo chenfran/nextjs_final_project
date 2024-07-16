@@ -36,21 +36,23 @@ export default function Reactions({
     }
   };
 
-  // // Use Pusher for real-time functionality:
-  // useEffect(() => {
-  //   pusherClient.subscribe(toPusherKey(`message:${messageId}`));
+  console.log('reaction:', reaction);
 
-  //   const reactionHandler = (reactions: Reaction) => {
-  //     setReaction(reactions.emoji);
-  //   };
+  // Use Pusher for real-time functionality:
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`message:${messageId}`));
 
-  //   pusherClient.bind('incoming-reaction', reactionHandler);
+    const reactionHandler = (reactions: Reaction) => {
+      setReaction(reactions.emoji);
+    };
 
-  //   return () => {
-  //     pusherClient.unsubscribe(toPusherKey(`message:${messageId}`));
-  //     pusherClient.unbind('incoming-reaction', reactionHandler);
-  //   };
-  // }, [messageId]);
+    pusherClient.bind('incoming-reaction', reactionHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`message:${messageId}`));
+      pusherClient.unbind('incoming-reaction', reactionHandler);
+    };
+  }, [messageId]);
 
   return (
     <div className="flex space-x-2 mt-2">

@@ -64,7 +64,7 @@ export async function POST(
 
   // notify all users about the new reaction
   await pusherServer.trigger(
-    toPusherKey(`reaction:${Number(body.messageId)}`),
+    toPusherKey(`message:${Number(body.messageId)}`),
     'incoming-reaction',
     {
       id: newReaction.id,

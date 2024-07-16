@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.cdnfonts.com/css/tt-norms-pro');
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +8,11 @@
 h1,
 .anton-font {
   @apply font-anton;
+}
+
+p,
+.tt-font {
+  @apply font-tt;
 }
 
 /* from youtube video */

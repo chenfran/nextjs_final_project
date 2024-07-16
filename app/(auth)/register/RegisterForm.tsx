@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -36,16 +37,30 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center pt-4">
-      <h1 className="text-4xl font-bold mb-8">Register Page</h1>
+    <div className="flex flex-col justify-center text-center pt-4 font-tt">
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold text-white font-tt mb-2">
+          create an account for free
+        </h1>
+        <span className="text-white">
+          already have an account?{' '}
+          <Link
+            className="link link-hover text-red-600 font-semibold"
+            href="/login"
+          >
+            login
+          </Link>
+        </span>
+      </div>
+
       <form
         className="flex flex-col items-center w-full max-w-md mx-auto"
         onSubmit={async (event) => await handleRegister(event)}
       >
         <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
-          Username
+          username
           <input
-            className="grow"
+            className="grow text-lg"
             placeholder="holger"
             value={username}
             onChange={(event) => setUsername(event.currentTarget.value)}
@@ -53,7 +68,7 @@ export default function RegisterForm() {
         </label>
 
         <label className="input input-bordered flex items-center gap-2 mb-4 mx-auto max-w-md w-full">
-          Password
+          password
           <input
             className="grow"
             placeholder="*****"
@@ -62,11 +77,13 @@ export default function RegisterForm() {
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
         </label>
-        <p className="text-xs mb-4">
-          [i] Username and password must contain at least 3 characters
+        <p className=" mb-4 text-white">
+          [i] username and password must contain at least 3 characters
         </p>
         <div className="flex justify-end w-full">
-          <button className="btn btn-primary gap-2">Register</button>
+          <button className="btn border-red-900 bg-red-900 text-white gap-2 hover:bg-red-600 hover:border-red-600">
+            sign up
+          </button>
         </div>
 
         {errors.map((error) => (

@@ -15,7 +15,6 @@ export default async function UserProfile(props: Props) {
 
   // 1️⃣ Checking if the sessionToken cookie exists
   const sessionCookie = cookies().get('sessionToken');
-  console.log('sessionCookie:', sessionCookie);
 
   // 2️⃣ Query the current user with the sessionToken
   const user = sessionCookie && (await getUser(sessionCookie.value));
@@ -27,18 +26,16 @@ export default async function UserProfile(props: Props) {
 
   // 4️⃣ If user exists, render the page
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-custom">
+    <div className="flex flex-col bg-black">
       <SideBarGameList />
       <div className="ml-64 flex-1">
-        <div className="w-full bg-black py-28">
-          <h1 className="text-white text-9xl text-center">
-            {props.params.username}
-          </h1>
+        <div className="w-full py-28">
+          <h1 className="text-9xl text-center text-white">{user.username}</h1>
         </div>
         <div className="w-full py-28">
           <div className="text-white text-9xl text-center">
             <Link
-              className="btn text-white bg-black border-black mr-10"
+              className="btn text-white bg-black border-white mr-10 hover:bg-red-900 hover:border-red-900"
               href="/games"
             >
               create a new game

@@ -21,16 +21,22 @@ export default async function Navbar() {
         {user ? (
           <>
             <Link
-              className="mr-4 btn btn-sm border-white bg-black text-white hover:bg-white hover:text-black"
+              className="mr-4 btn btn-sm border-black bg-black text-white hover:bg-white hover:text-black"
               href={`/profile/${user.username}`}
             >
               {user.username}s' profile
             </Link>
             <Link
-              className="mr-10 btn btn-sm border-white bg-black text-white hover:bg-white hover:text-black"
+              className="mr-4 btn btn-sm border-black bg-black text-white hover:bg-white hover:text-black"
               href="/games"
             >
-              + start new game
+              start new game
+            </Link>
+            <Link
+              className="mr-10 btn btn-sm border-black bg-black text-white hover:bg-white hover:text-black"
+              href="/games-list"
+            >
+              join games
             </Link>
 
             <LogoutButton />

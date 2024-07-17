@@ -44,9 +44,7 @@ export default function LoginForm(props: Props) {
   return (
     <div className="flex flex-col justify-center text-center pt-4">
       <div className="mb-10">
-        <h1 className="text-4xl font-bold text-white font-tt mb-2">
-          create an account for free
-        </h1>
+        <h1 className="text-4xl font-bold text-white font-tt mb-2">login</h1>
         <span className="text-white">
           don't have an account?{' '}
           <Link
@@ -81,8 +79,8 @@ export default function LoginForm(props: Props) {
           />
         </label>
         <div className="flex justify-end w-full">
-          <button className="btn bg-red-900 border-red-900 text-white gap-2">
-            Login
+          <button className="btn bg-red-900 border-red-900 text-white gap-2 hover:bg-red-600 hover:border-red-600">
+            login
           </button>
         </div>
 

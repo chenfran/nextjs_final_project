@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center items-center bg-gradient-custom p-6">
+    <div className="flex flex-col justify-center items-center bg-black p-6">
       <h1 className="text-6xl text-white mb-20">black stories</h1>
       <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
         <div className="card bg-base-100 w-96 shadow-xl">
@@ -45,7 +45,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="card bg-base-100 w-96 shadow-xl">
+        {/* <div className="card bg-base-100 w-96 shadow-xl">
           <figure>
             <img src="/bs-occupied.webp" alt="Occupied" />
           </figure>
@@ -64,7 +64,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

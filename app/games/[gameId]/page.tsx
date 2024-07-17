@@ -35,14 +35,14 @@ export default async function GamePage(props: Props) {
   if (!singleGame) {
     return (
       <div className="flex flex-col justify-center text-center pt-4">
-        <h1 className="text-4xl text-red-900 font-bold mb-8">
-          No game available
+        <h1 className="text-4xl text-red-900 font-bold mb-8 font-tt">
+          no game available
         </h1>
-        <Link className="text-red-900 mb-8" href="/games">
-          Please create a new game
+        <Link className="text-red-900 mb-8 text-2xl" href="/games">
+          please create a new game
           <div className="flex justify-center w-full mt-10">
-            <button className="btn bg-red-900 border-red-900 text-white gap-2">
-              Create new game
+            <button className="btn bg-white text-black gap-2 hover:bg-red-950 hover:text-white hover:border-red-950">
+              create new game
             </button>
           </div>
         </Link>
@@ -64,11 +64,11 @@ export default async function GamePage(props: Props) {
           </div>
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
-              <span className="text-gray-700 mr-3 font-semibold">
+              <span className="text-white mr-3 font-semibold font-tt">
                 {user.username}
               </span>
             </div>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-white font-tt">
               Title: {singleGame.title} - Story: {singleGame.story}
             </span>
           </div>
@@ -77,6 +77,7 @@ export default async function GamePage(props: Props) {
       <div className="flex-1 overflow-y-auto">
         <Messages params={params} userId={user.id} gameId={singleGame.id} />
       </div>
+
       <div className="border-t border-gray-200">
         <ChatInput gameId={singleGame.id} />
       </div>

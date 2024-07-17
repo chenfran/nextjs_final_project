@@ -12,8 +12,9 @@ export default function LogoutButton() {
           await logout();
           router.refresh();
         }}
+        className="mr-5 btn btn-sm border-red-950 bg-red-950 text-white hover:bg-red-500 hover:border-red-500"
       >
-        Logout
+        logout
       </button>
     </form>
   );

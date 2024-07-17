@@ -41,23 +41,6 @@ export default function Messages({ params, userId, gameId }: Props) {
     };
   }, [gameId]);
 
-  // // Use Pusher for real-time functionality:
-  // useEffect(() => {
-  //   pusherClient.subscribe(toPusherKey(`message:${messageId}`));
-
-  //   const reactionHandler = (reactions: Reaction) => {
-  //     setReaction(reactions.emoji);
-  //   };
-
-  //   pusherClient.bind('incoming-reaction', reactionHandler);
-
-  //   return () => {
-  //     pusherClient.unsubscribe(toPusherKey(`message:${messageId}`));
-  //     pusherClient.unbind('incoming-reaction', reactionHandler);
-  //   };
-  // }, [messageId]);
-
-
   return (
     <div>
       {/* display messages */}

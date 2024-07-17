@@ -81,7 +81,7 @@ export default function RegisterForm() {
           [i] username and password must contain at least 3 characters
         </p>
         <div className="flex justify-end w-full">
-          <button className="btn border-red-900 bg-red-900 text-white gap-2 hover:bg-red-600 hover:border-red-600">
+          <button className="btn border-white bg-black text-white gap-2 hover:bg-white hover:text-black">
             sign up
           </button>
         </div>

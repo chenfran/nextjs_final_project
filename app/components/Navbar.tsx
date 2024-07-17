@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import LogoutButton from '../(auth)/logout/LogoutButton';
 import { getUser } from '../../database/users';
-import TextAvatar from './TextAvatar';
 
 export default async function Navbar() {
   const sessionCookie = cookies().get('sessionToken');
@@ -21,39 +20,20 @@ export default async function Navbar() {
       <div className="flex-none gap-2">
         {user ? (
           <>
-            <Link className=" text-white" href={`/profile/${user.username}`}>
-              {user.username}
+            <Link
+              className="mr-4 btn btn-sm border-white bg-black text-white hover:bg-white hover:text-black"
+              href={`/profile/${user.username}`}
+            >
+              {user.username}s' profile
             </Link>
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-black ">
-                  M
-                </div>
-              </div>
-              <ul
-                tabIndex={-1}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <Link
-                    className="justify-between"
-                    href={`/profile/${user.username}`}
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/games">New Game</Link>
-                </li>
-                <li>
-                  <LogoutButton />
-                </li>
-              </ul>
-            </div>
+            <Link
+              className="mr-10 btn btn-sm border-white bg-black text-white hover:bg-white hover:text-black"
+              href="/games"
+            >
+              + start new game
+            </Link>
+
+            <LogoutButton />
           </>
         ) : (
           <>

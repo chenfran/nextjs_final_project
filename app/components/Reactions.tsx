@@ -36,14 +36,14 @@ export default function Reactions({
     }
   };
 
-  console.log('reaction:', reaction);
-
   // Use Pusher for real-time functionality:
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`message:${messageId}`));
 
     const reactionHandler = (reactions: Reaction) => {
-      setReaction(reactions.emoji);
+      if (reactions.messageId === messageId) {
+        setReaction(reactions.emoji);
+      }
     };
 
     pusherClient.bind('incoming-reaction', reactionHandler);
@@ -59,13 +59,13 @@ export default function Reactions({
       {!reaction ? (
         <>
           <button
-            className={`p-2 rounded-full ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+            className={`p-2 rounded-full h-10 w-10 ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-green-900 text-gray-600'}`}
             onClick={() => handleReaction('👍')}
           >
             👍
           </button>
           <button
-            className={`p-2 rounded-full ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+            className={`p-2 rounded-full h-10 w-10 ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-red-500 text-gray-600'}`}
             onClick={() => handleReaction('👎')}
           >
             👎

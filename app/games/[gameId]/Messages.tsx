@@ -64,7 +64,7 @@ export default function Messages({ params, userId, gameId }: Props) {
                   >
                     <span
                       className={`px-4 py-2 rounded-lg inline-block
-                      ${isCurrentUser ? 'bg-red-900 text-white' : 'bg-gray-200 text-gray-900'}
+                      ${isCurrentUser ? 'bg-white text-black' : 'bg-white text-gray-900'}
                       ${!hasNextMessageFromSameUser && isCurrentUser ? 'rounded-br-none' : ''}
                       ${!hasNextMessageFromSameUser && !isCurrentUser ? 'rounded-bl-none' : ''}`}
                     >

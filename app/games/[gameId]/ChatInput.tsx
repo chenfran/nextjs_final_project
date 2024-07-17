@@ -61,7 +61,7 @@ export default function ChatInput({ gameId }: Props) {
       {/* display chatinput */}
       <form onSubmit={handleSubmit}>
         <div>
-          <div className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
+          <div className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600 bg-white">
             <TextareaAutosize
               ref={textareaRef}
               onKeyDown={async (event) => {
@@ -73,7 +73,7 @@ export default function ChatInput({ gameId }: Props) {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder="Type in your message"
-              className="block w-full pl-2 resize-none border-0 bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
+              className="block w-full pl-2 resize-none border-0 bg-transparent text-black placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
             />
             {/* <EmojiPicker /> */}
 
@@ -90,7 +90,7 @@ export default function ChatInput({ gameId }: Props) {
             <div className="absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
               <div className="flex-shrink-0">
                 <button
-                  className={`btn bg-red-900 border-red-900 text-white gap-2 ${messageTextIsEmpty ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`btn bg-red-900 border-red-900 text-white gap-2 hover:bg-red-500 ${messageTextIsEmpty ? 'cursor-not-allowed bg-gray-500 border-gray-500' : ''}`}
                   disabled={messageTextIsEmpty}
                 >
                   Send

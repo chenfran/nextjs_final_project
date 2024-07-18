@@ -42,7 +42,7 @@ export default function LoginForm(props: Props) {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center pt-4">
+    <div className="flex flex-col justify-start text-center pt-4 min-h-screen">
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-white font-tt mb-2">login</h1>
         <span className="text-white">

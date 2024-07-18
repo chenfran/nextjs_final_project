@@ -60,11 +60,11 @@ export default function Messages({ params, userId, gameId }: Props) {
                   className={`flex items-end ${isCurrentUser ? 'justify-end' : ''}`}
                 >
                   <div
-                    className={`flex flex-col p-2 rounded space-y-2 text-base max-w-xs mx-2 ${isCurrentUser ? 'order-1 items-end' : 'order-2 items-start'}`}
+                    className={`flex flex-col p-2 rounded space-y-2 text-base max-w-fit mx-2 grow ${isCurrentUser ? 'order-1 items-end' : 'order-2 items-start'}`}
                   >
                     <span
                       className={`px-4 py-2 rounded-lg inline-block
-                      ${isCurrentUser ? 'bg-white text-black' : 'bg-white text-gray-900'}
+                      ${isCurrentUser ? 'bg-red-900 text-white' : 'bg-zinc-800 text-white'}
                       ${!hasNextMessageFromSameUser && isCurrentUser ? 'rounded-br-none' : ''}
                       ${!hasNextMessageFromSameUser && !isCurrentUser ? 'rounded-bl-none' : ''}`}
                     >

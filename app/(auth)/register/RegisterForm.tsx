@@ -37,7 +37,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center pt-4 font-tt">
+    <div className="flex flex-col justify-start text-center pt-4 font-tt min-h-screen">
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-white font-tt mb-2">
           create an account for free

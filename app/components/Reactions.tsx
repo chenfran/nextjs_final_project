@@ -152,20 +152,20 @@ export default function Reactions({
       {!reaction ? (
         <>
           <button
-            className={`p-2 rounded-full h-10 w-10 ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-green-900 text-gray-600'}`}
+            className={`p-2 rounded-full h-10 w-10 ${reaction === '👍' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'}`}
             onClick={() => handleReaction('👍')}
           >
             👍
           </button>
           <button
-            className={`p-2 rounded-full h-10 w-10 ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-red-500 text-gray-600'}`}
+            className={`p-2 rounded-full h-10 w-10 ${reaction === '👎' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'}`}
             onClick={() => handleReaction('👎')}
           >
             👎
           </button>
         </>
       ) : (
-        <p>{reaction}</p>
+        <p className="p-2 rounded-full h-10 w-10 bg-blue-500">{reaction}</p>
       )}
     </div>
   );

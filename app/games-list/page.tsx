@@ -6,7 +6,7 @@ export default async function SideBarGameList() {
   const games = await getGamesInsecure();
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-black p-8 relative">
+    <div className="flex flex-col items-center justify-start h-full bg-black p-8 relative">
       <h1 className="text-white text-6xl mb-12 z-10">list of active games</h1>
       <div className="flex w-full max-w-6xl space-x-8 z-10">
         <div className="w-2/3">

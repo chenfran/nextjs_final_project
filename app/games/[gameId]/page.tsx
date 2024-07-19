@@ -35,10 +35,10 @@ export default async function GamePage(props: Props) {
   if (!singleGame) {
     return (
       <div className="flex flex-col justify-center text-center pt-4">
-        <h1 className="text-4xl text-red-900 font-bold mb-8 font-tt">
+        <h1 className="text-4xl text-red-500 font-bold mb-8 font-tt">
           no game available
         </h1>
-        <Link className="text-red-900 mb-8 text-2xl" href="/games">
+        <Link className="text-red-500 mb-8 text-2xl" href="/games">
           please create a new game
           <div className="flex justify-center w-full mt-10">
             <button className="btn bg-white text-black gap-2 hover:bg-red-950 hover:text-white hover:border-red-950">
@@ -54,7 +54,7 @@ export default async function GamePage(props: Props) {
   const params = await getMessagesInsecure(Number(props.params.gameId));
 
   return (
-    <div className="flex flex-col h-screen max-h-screen ml-4 mr-4">
+    <div className="flex flex-col h-screen ml-4 mr-4">
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
           <div className="relative">
@@ -68,7 +68,7 @@ export default async function GamePage(props: Props) {
                 {user.username}
               </span>
             </div>
-            <span className="text-sm text-white font-tt">
+            <span className="text-lg text-white font-tt">
               Title: {singleGame.title} - Story: {singleGame.story}
             </span>
           </div>

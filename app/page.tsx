@@ -1,12 +1,10 @@
-// pages/index.js
-import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
   return (
     <div>
-      <div className="flex flex-col min-h-screen items-center justify-center bg-black text-white px-4">
+      <div className="flex flex-col h-full items-center justify-center bg-black text-white px-4">
         <div
           className="relative w-full max-w-6xl flex flex-col md:flex-row items-center rounded-lg p-6 md:p-8 bg-black bg-opacity-50 shadow-lg"
           style={{ minHeight: '80vh' }}

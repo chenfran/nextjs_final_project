@@ -11,7 +11,7 @@ export default function NewGameForm() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col justify-center text-center pt-4">
+    <div className="flex flex-col justify-start text-center pt-4 min-h-screen">
       <h1 className="text-4xl font-bold mb-8 text-white font-tt">
         create a new game
       </h1>

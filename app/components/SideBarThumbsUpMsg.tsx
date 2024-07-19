@@ -35,15 +35,27 @@ export default function SideBarThumbsUpMsg({ params, gameId }: Props) {
   }, [gameId]);
 
   return (
-    <div>
-      <div className="flex flex-1 flex-col-reverse overflow-y-auto">
-        <div className="flex flex-col space-y-1 p-3 text-white">
+    <div className="drawer drawer-end">
+      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content">
+        Page content here
+        <label htmlFor="my-drawer-4" className="drawer-button btn btn-primary">
+          Open filtered messages
+        </label>
+      </div>
+      <div className="drawer-side">
+        <label
+          htmlFor="my-drawer-4"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        />
+        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
           {messages.map((message) =>
             message.emoji === '👍' ? (
-              <div key={`messages-${message.id}`}>{message.content}</div>
+              <li key={`messages-${message.id}`}>{message.content}</li>
             ) : null,
           )}
-        </div>
+        </ul>
       </div>
     </div>
   );

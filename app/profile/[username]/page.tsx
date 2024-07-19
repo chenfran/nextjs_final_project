@@ -32,7 +32,7 @@ export default async function UserProfile() {
       <div className="flex ml-8 space-x-36 text-white relative z-10">
         <div className="flex flex-col items-start">
           <span className="text-9xl font-bold">{user.username}s'</span>
-          <div className="flex">
+          <div className="flex w-96">
             <Link
               className="mr-4 mt-4 px-4 py-2 bg-white text-black text-xl font-semibold rounded-md shadow-md hover:bg-black hover:text-white"
               href="/games"

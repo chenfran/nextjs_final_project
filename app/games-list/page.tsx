@@ -27,11 +27,11 @@ export default async function SideBarGameList() {
                   key={`games-${game.id}`}
                   className="border-b border-red-950"
                 >
-                  <td className="px-6 py-4 text-white">{game.title}</td>
+                  <td className="px-6 py-4 text-white text-lg">{game.title}</td>
                   <td className="px-6 py-4 text-white">
                     <Link
                       href={`/games/${game.id}`}
-                      className="btn btn-xs bg-white text-black hover:bg-black hover:text-white"
+                      className="btn btn-sm bg-white text-black hover:bg-black hover:text-white"
                     >
                       join the game
                     </Link>

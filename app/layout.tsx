@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 
 const geistSans = localFont({
@@ -32,7 +31,7 @@ export default function RootLayout({
       >
         <Navbar />
         <main className="flex-1 overflow-y-auto">{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

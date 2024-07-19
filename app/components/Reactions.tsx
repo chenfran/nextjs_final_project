@@ -165,7 +165,9 @@ export default function Reactions({
           </button>
         </>
       ) : (
-        <p className="p-2 rounded-full h-10 w-10 bg-blue-500">{reaction}</p>
+        <p className="flex items-center justify-center p-2 rounded-full h-10 w-10 bg-blue-500">
+          {reaction}
+        </p>
       )}
     </div>
   );

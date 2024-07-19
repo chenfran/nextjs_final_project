@@ -85,11 +85,6 @@ export default function Messages({ params, userId, gameId }: Props) {
                         userId={message.userId}
                         currentReaction={message.emoji}
                       />
-                      {/* <EmojiPickerComponent
-                        messageId={message.id}
-                        userId={message.userId}
-                        currentReaction={message.emoji}
-                      /> */}
                     </span>
                   </div>
                 </div>

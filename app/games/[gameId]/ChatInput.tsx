@@ -1,6 +1,5 @@
 'use client';
 
-// import EmojiPicker from 'emoji-picker-react';
 import { useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -86,7 +85,6 @@ export default function ChatInput({ gameId }: Props) {
               placeholder="Type in your message"
               className="block w-full pl-2 resize-none border-0 bg-transparent text-black placeholder:text-gray-400 focus:outline-none focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6"
             />
-            {/* <EmojiPicker /> */}
 
             <div
               onClick={() => textareaRef.current?.focus()}

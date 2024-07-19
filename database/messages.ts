@@ -1,7 +1,6 @@
 import { cache } from 'react';
 import {
   Message,
-  MessageWithUsername,
   MessageWithUsernameAndReaction,
 } from '../migrations/00003-createTableMessages';
 import { sql } from './connect';

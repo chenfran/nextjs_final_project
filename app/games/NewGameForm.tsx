@@ -3,6 +3,16 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+interface ErrorResponse {
+  error: string;
+}
+
+interface GameResponse {
+  game: {
+    id: number;
+  };
+}
+
 export default function NewGameForm() {
   const [title, setTitle] = useState('');
   const [story, setStory] = useState('');
@@ -38,14 +48,14 @@ export default function NewGameForm() {
             let newErrorMessage = 'Error creating game';
 
             try {
-              const body = await response.json();
+              const body: ErrorResponse = await response.json();
               newErrorMessage = body.error;
             } catch {}
 
             setErrorMessage(newErrorMessage);
             return;
           }
-          const data = await response.json();
+          const data: GameResponse = await response.json();
 
           setTitle('');
           setStory('');

@@ -16,13 +16,18 @@ export type MessagesResponseBodyPost =
       error: string;
     };
 
+interface RequestBody {
+  gameId: string;
+  content: string;
+}
+
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<MessagesResponseBodyPost>> {
   // Task: Create a new message for the current logged in user
 
   // Get the message data from the request
-  const body = await request.json();
+  const body: RequestBody = await request.json();
 
   // Validate messages data with zod
   const result = messageSchema.safeParse(body);

@@ -8,6 +8,17 @@ type Props = {
   gameId: number;
 };
 
+interface BodyResponse {
+  content: string;
+  gameId: string;
+  error: string;
+}
+
+interface ApiResponse {
+  content: string;
+  gameId: string;
+}
+
 export default function ChatInput({ gameId }: Props) {
   const [input, setInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,7 +53,7 @@ export default function ChatInput({ gameId }: Props) {
       let newErrorMessage = 'Error creating message';
 
       try {
-        const body = await response.json();
+        const body: BodyResponse = await response.json();
         newErrorMessage = body.error;
       } catch {}
 
@@ -50,7 +61,7 @@ export default function ChatInput({ gameId }: Props) {
       return;
     }
 
-    const data = await response.json();
+    const data: ApiResponse = await response.json();
 
     setInput('');
     return data;

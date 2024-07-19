@@ -19,13 +19,17 @@ export type ReactionsResponseBodyPost =
       error: string;
     };
 
+interface RequestBody {
+  messageId: string;
+}
+
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ReactionsResponseBodyPost>> {
   // Task: Create a new reaction for the message
 
   // Get the reaction data from the request
-  const body = await request.json();
+  const body: RequestBody = await request.json();
 
   // Validate reactions data with zod
   const result = reactionSchema.safeParse(body);

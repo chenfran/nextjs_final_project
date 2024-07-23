@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageWithUsernameAndReaction } from '../../../migrations/00003-createTableMessages';
 import { pusherClient } from '../../../util/pusher';
 import { formatDate, toPusherKey } from '../../../util/utils';
-import EmojiPickerComponent from '../../components/EmojiPickerComponent';
 import Reactions from '../../components/Reactions';
 
 type Props = {
@@ -86,11 +85,6 @@ export default function Messages({ params, userId, gameId }: Props) {
                         userId={message.userId}
                         currentReaction={message.emoji}
                       />
-                      {/* <EmojiPickerComponent
-                        messageId={message.id}
-                        userId={message.userId}
-                        currentReaction={message.emoji}
-                      /> */}
                     </span>
                   </div>
                 </div>

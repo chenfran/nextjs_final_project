@@ -35,29 +35,28 @@ export default function SideBarThumbsUpMsg({ params, gameId }: Props) {
   }, [gameId]);
 
   return (
-    <div className="drawer drawer-end">
-      <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-        Page content here
-        <label htmlFor="my-drawer-4" className="drawer-button btn btn-primary">
-          Open filtered messages
-        </label>
-      </div>
-      <div className="drawer-side">
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        />
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          {messages.map((message) =>
-            message.emoji === '👍' ? (
-              <li key={`messages-${message.id}`}>{message.content}</li>
-            ) : null,
-          )}
-        </ul>
-      </div>
+    <div className="fixed left-0 top-0 h-full w-80 bg-base-200 text-base-content p-4 shadow-lg overflow-y-auto">
+      <h2 className="text-xl font-bold mb-4">Thumbs Up Messages</h2>
+      <ul className="space-y-2">
+        {messages
+          .filter((message) => message.emoji === '👍')
+          .map((message) => (
+            <li
+              key={`messages-${message.id}`}
+              className="bg-white p-2 rounded shadow"
+            >
+              {message.content}
+            </li>
+          ))}
+      </ul>
     </div>
+    // <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+    //   {messages.map((message) =>
+    //     message.emoji === '👍' ? (
+    //       <li key={`messages-${message.id}`}>{message.content}</li>
+    //     ) : null,
+    //   )}
+    // </ul>
   );
 }
 

@@ -10,7 +10,7 @@ export default async function Navbar() {
   console.log('user:', user); // OUTPUT: user: { username: 'victor' }
 
   return (
-    <div className="navbar bg-gray-950">
+    <div className="navbar bg-black">
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
           <h1 className="text-white font-tt">black stories</h1>

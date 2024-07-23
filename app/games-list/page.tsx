@@ -55,7 +55,7 @@ export default async function SideBarGameList() {
           />
         </div> */}
         <div className="absolute md:relative top-0 md:top-auto right-0 md:right-auto mt-24 md:mt-0 mr-16 md:mr-0 z-0 flex justify-center md:justify-end md:w-1/3">
-          <div className="relative w-48 md:w-72 max-w-300 min-w-160">
+          <div className="hidden md:block relative w-48 md:w-72 max-w-300 min-w-160">
             <Image
               src="/blutflecken.webp"
               alt="Blood stains"

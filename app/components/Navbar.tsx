@@ -5,9 +5,8 @@ import { getUser } from '../../database/users';
 
 export default async function Navbar() {
   const sessionCookie = cookies().get('sessionToken');
-  console.log('sessionCookie:', sessionCookie);
+
   const user = sessionCookie && (await getUser(sessionCookie.value));
-  console.log('user:', user); // OUTPUT: user: { username: 'victor' }
 
   return (
     <div className="navbar bg-black">

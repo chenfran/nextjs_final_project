@@ -1,6 +1,8 @@
 # Nextjs Final Project
 
-Description:
+## A real-time chat application for the game of Black Stories.
+
+Users can register and start a new story from the Black Stories game to play with their friends.
 
 ## Technologies
 

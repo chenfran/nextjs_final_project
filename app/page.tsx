@@ -11,7 +11,7 @@ export default function Home() {
         >
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
             <Image
-              src="/landing-page.webp"
+              src="/pile-of-cards.webp"
               alt="Pile of cards"
               layout="fill"
               objectFit="contain"
@@ -20,7 +20,7 @@ export default function Home() {
           </div>
           <div className="relative z-10 flex-shrink-0 mb-6 md:mb-0 md:w-1/2">
             <Image
-              src="/landing-page.webp"
+              src="/pile-of-cards.webp"
               alt="Pile of cards"
               width={500}
               height={500}

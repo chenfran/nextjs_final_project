@@ -1,4 +1,4 @@
-// for testing purposes
+// FOR TESTING ONLY
 
 export default function Test() {
   return (

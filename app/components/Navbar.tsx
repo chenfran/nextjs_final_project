@@ -5,7 +5,6 @@ import { getUser } from '../../database/users';
 
 export default async function Navbar() {
   const sessionCookie = cookies().get('sessionToken');
-
   const user = sessionCookie && (await getUser(sessionCookie.value));
 
   return (

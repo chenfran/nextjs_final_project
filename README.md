@@ -16,38 +16,77 @@ This project showcases a variety of technologies and techniques for web developm
 
 ## Technologies Used
 
-- Next.js
-- Tailwind CSS & DaisyUI: https://daisyui.com/
-- PostgreSQL
-- Ley
-- Pusher: https://pusher.com/
-- Session tokens with bcrypt for password hashing
-- Docker & Fly.io: https://fly.io/
-
-## Setup instructions
-
-To get started with the project, follow these steps:
-
-1. Clone the repository: `git clone [repo URL]`
-2. Install dependencies: `pnpm install`
-3. Setup the database:
-
-- Download and install PostgreSQL
-- Create a user and a database in PostgreSQL
-
-4. Configure environment variables:
-
-- Create a new file named `.env`
-- Copy the environment variables from `.env-example` into `.env`
-- Replace the placeholders `xxxxx` with your PostgreSQL username, password and database name
-
-5. Add migration script by adding the following script to your `package.json`: `"scripts: {
-"migrate": "ley --require tsx/cjs"
-}`
-6. Apply database migrations: `pnpm migrate up`
-7. Start the server: `pnpm dev`
-8. Open your browser and navigate to http://localhost:3000 to see the application in action
+![Static Badge](https://img.shields.io/badge/NEXT-black?style=flat-square&logo=nextdotjs)
+![Static Badge](https://img.shields.io/badge/JAVASCRIPT-black?style=flat-square&logo=javascript)
+![Static Badge](https://img.shields.io/badge/TYPESCRIPT-black?style=flat-square&logo=typescript)
+![Static Badge](https://img.shields.io/badge/TAILWIND_CSS-black?style=flat-square&logo=tailwindcss)
+![Static Badge](https://img.shields.io/badge/PUSHER-black?style=flat-square&logo=pusher)
+![Static Badge](https://img.shields.io/badge/POSTGRESQL-black?style=flat-square&logo=postgresql)
+![Static Badge](https://img.shields.io/badge/FIGMA-black?style=flat-square&logo=figma)
+![Static Badge](https://img.shields.io/badge/VERCEL-black?style=flat&logo=vercel)
+![Static Badge](https://img.shields.io/badge/JEST-black?style=flat-square&logo=jest)
 
 ## Screenshots
 
-![Landing page](public/black-stories-landing-page.png)
+![Landing page](public/final-look.png)
+
+## Setup instructions
+
+1. Clone the repository
+   ```
+   git clone https://github.com/cheorodio/golokal.git
+   cd golokal
+   ```
+2. Install dependencies using
+   ```
+   pnpm install
+   ```
+3. Setup postgres database
+4. Create a file called .env in the project root directory and paste the following, changing to your own username, password and database:
+
+   ```
+   PGHOST=localhost
+   PGUSERNAME=<your username>
+   PGPASSWORD=<your password>
+   PGDATABASE=<your database name>
+
+   PUSHER_APP_ID=<your app id>
+   NEXT_PUBLIC_PUSHER_APP_KEY=<your app key>
+   PUSHER_APP_SECRET=<your app secret>
+   PUSHER_APP_CLUSTER=<your app cluster>
+   ```
+
+5. Then run the following queries, with a database name, username and password of your own.
+
+   ```
+   CREATE DATABASE <database name>;
+   CREATE USER <user name> WITH ENCRYPTED PASSWORD '<user password>';
+   GRANT ALL PRIVILEGES ON DATABASE <database name> TO <user name>;
+   \connect <database name>;
+   CREATE SCHEMA <user name> AUTHORIZATION <user name>;
+   ```
+
+6. Connect to postgres database and run either:
+
+   - `psql -U <user name> <database name>` on windows and macOS
+   - `sudo -u <user name> psql -U <user name> <database name>` on Linux
+
+7. Add migration script by adding the following script to your `package.json`:
+
+   ```
+   "scripts: {
+   "migrate": "ley --require tsx/cjs"
+   }
+   ```
+
+8. Apply database migrations
+
+   ```
+   pnpm migrate up
+   ```
+
+9. Run application
+   ```
+   pnpm dev
+   ```
+   Open http://localhost:3000 on browser.

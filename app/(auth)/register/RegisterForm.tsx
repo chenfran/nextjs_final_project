@@ -61,7 +61,6 @@ export default function RegisterForm() {
           username
           <input
             className="grow text-lg"
-            placeholder="holger"
             value={username}
             onChange={(event) => setUsername(event.currentTarget.value)}
           />
@@ -71,7 +70,6 @@ export default function RegisterForm() {
           password
           <input
             className="grow"
-            placeholder="*****"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
